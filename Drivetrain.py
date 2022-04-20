@@ -1,5 +1,5 @@
-from PWMController import PWMController
 from USBController import USBController
+from PWMController import PWMController
 
 
 class Drivetrain:

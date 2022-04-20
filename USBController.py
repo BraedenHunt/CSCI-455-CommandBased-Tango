@@ -11,8 +11,10 @@ class USBController:
                 self.usb = serial.Serial('/dev/ttyACM1')
             except:
                 print("No servo serial ports found")
-                sys.exit(0)
-
+                self.usb = None
     def sendCmd(self, cmd):
-        cmdStr = chr(0xaa) + chr(0x0c) + cmd
-        self.usb.write(bytes(cmdStr, 'latin-1'))
+        if self.usb is not None:
+            cmdStr = chr(0xaa) + chr(0x0c) + cmd
+            self.usb.write(bytes(cmdStr, 'latin-1'))
+        else:
+            print("Fake sending command")
