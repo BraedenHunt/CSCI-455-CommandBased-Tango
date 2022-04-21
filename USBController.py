@@ -16,5 +16,6 @@ class USBController:
         if self.usb is not None:
             cmdStr = chr(0xaa) + chr(0x0c) + cmd
             self.usb.write(bytes(cmdStr, 'latin-1'))
+            print("Sending command: " + cmdStr)
         else:
             print("Fake sending command")
