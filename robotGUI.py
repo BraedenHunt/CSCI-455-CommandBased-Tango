@@ -41,7 +41,7 @@ class RobotGUI(tk.Tk):
         self.btn_reset = tk.Button(self.frm_buttons,bg="grey",fg="orange", text="Reset", command=lambda:self.reset())
         self.btn_close = tk.Button(self.frm_buttons, text="Close",bg="grey",fg="red", command=lambda: self.destroy())
 
-        self.btn_start.grid(row=0, column=0,sticky="ew",padx=5,pady=(5,50))
+        self.btn_start.grid(row=0, column=0,sticky="ew",padx=5,pady=5)
 
         self.btn_drive.grid(row=1, column=0,sticky="ew",padx=5,pady=5)
         self.btn_turn.grid(row=2, column=0,sticky="ew",padx=5,pady=5)
