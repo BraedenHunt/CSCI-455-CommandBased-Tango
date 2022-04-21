@@ -59,7 +59,6 @@ class RobotGUI(tk.Tk):
         self.frm_gif = tk.Frame(self, relief=tk.RAISED, bd=2, bg="blue")
 
 
-        #self.openAnimation()
 
 
         self.frm_buttons.grid(row=0, column=0, sticky="ns")
@@ -68,6 +67,7 @@ class RobotGUI(tk.Tk):
 
     def start(self):
         if(self.actions):
+            self.openAnimation()
             self.commands.queue.clear()
             print("Starting:")
             for action in self.actions:
