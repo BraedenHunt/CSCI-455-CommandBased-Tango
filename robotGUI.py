@@ -57,21 +57,21 @@ class RobotGUI(tk.Tk):
             print("Starting:")
             for action in self.actions:
                 if isinstance(action, Drive):
-                    command = DriveCommand(self.robot_container.drivetrain, action.dur/1000.0, action.dir * action.spd/3.0, action.dir * action.spd/3.0)
+                    command = DriveCommand(self.robot_container.drivetrain, action.dur/1000.0, action.dir * action.spd/6.0, action.dir * action.spd/6.0)
                 elif isinstance(action, Hear):
                     pass
                 elif isinstance(action, Turn):
-                    command = DriveCommand(self.robot_container.drivetrain, action.dur/1000.0, -1 * action.dir * action.spd / 3.0,
-                                           action.dir * action.spd / 3.0)
+                    command = DriveCommand(self.robot_container.drivetrain, action.dur/1000.0, -1 * action.dir * action.spd / 6.0,
+                                           action.dir * action.spd / 6.0)
 
                 elif isinstance(action, Speak):
                     pass
                 elif isinstance(action, Roll):
-                    command = ServoCommand(self.robot_container.head_twist, action.pos)
+                    command = ServoCommand(self.robot_container.head_twist, action.pos/2.0)
                 elif isinstance(action, Torso):
-                    command = ServoCommand(self.robot_container.waist, action.pos)
+                    command = ServoCommand(self.robot_container.waist, action.pos/2.0)
                 elif isinstance(action, Pitch):
-                    command = ServoCommand(self.robot_container.head_tilt, -action.pos)
+                    command = ServoCommand(self.robot_container.head_tilt, -action.pos/2.0)
                 else:
                     print("Unknown action: " + action)
                 self.commands.put(command)
@@ -175,7 +175,7 @@ class Drive():
         self.options = None
         self.dir = 1;
         self.dur = 1000;
-        self.spd = 1;
+        self.spd = 3;
 
     def createLayout(self,parentFrame,count):
         actionTitle = "#%d. Drive" % (count)  
@@ -214,9 +214,9 @@ class Drive():
         spdLbl.grid(column=1, row=0,sticky="w", padx=5)
 
         speed = tk.IntVar(frm,self.spd)
-        sr1 = tk.Radiobutton(frm,text="Slow", value=1,variable=speed,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
-        sr2 = tk.Radiobutton(frm,text="Medium", value=2,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
-        sr3 = tk.Radiobutton(frm,text="Fast", value=3,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr1 = tk.Radiobutton(frm,text="Slow", value=3,variable=speed,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr2 = tk.Radiobutton(frm,text="Medium", value=4,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr3 = tk.Radiobutton(frm,text="Fast", value=6,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
         sr1.grid(column=1,row=1,sticky="w")
         sr2.grid(column=1,row=2,sticky="w")
         sr3.grid(column=1,row=3,sticky="w")
@@ -243,7 +243,7 @@ class Turn():
     def __init__(self):
         self.dir = 1;
         self.dur = 1000;
-        self.spd = 1;
+        self.spd = 3;
     
     def createLayout(self,parentFrame,count):
         actionTitle = "#%d. Turn" % (count)  
@@ -282,9 +282,9 @@ class Turn():
         spdLbl.grid(column=1, row=0,sticky="w", padx=5)
 
         speed = tk.IntVar(frm,self.spd)
-        sr1 = tk.Radiobutton(frm,text="Slow", value=1.5,variable=speed,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
-        sr2 = tk.Radiobutton(frm,text="Medium", value=2,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
-        sr3 = tk.Radiobutton(frm,text="Fast", value=3,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr1 = tk.Radiobutton(frm,text="Slow", value=3,variable=speed,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr2 = tk.Radiobutton(frm,text="Medium", value=4,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr3 = tk.Radiobutton(frm,text="Fast", value=6,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
         sr1.grid(column=1,row=1,sticky="w")
         sr2.grid(column=1,row=2,sticky="w")
         sr3.grid(column=1,row=3,sticky="w")
@@ -339,11 +339,11 @@ class Pitch():
         posLbl.grid(column=0, row=0,sticky="w", padx=5)
 
         position = tk.IntVar(frm,self.pos)
-        pr1 = tk.Radiobutton(frm,text="Far Down", value=-1,variable=position,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
-        pr2 = tk.Radiobutton(frm,text="Down", value=-.5,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
+        pr1 = tk.Radiobutton(frm,text="Far Down", value=-2,variable=position,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        pr2 = tk.Radiobutton(frm,text="Down", value=-1,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
         pr3 = tk.Radiobutton(frm,text="Middle", value=0,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
-        pr4 = tk.Radiobutton(frm,text="Up", value=.5,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
-        pr5 = tk.Radiobutton(frm,text="Far Up", value=1,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
+        pr4 = tk.Radiobutton(frm,text="Up", value=1,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
+        pr5 = tk.Radiobutton(frm,text="Far Up", value=2,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
         pr1.grid(column=0,row=1,sticky="w")
         pr2.grid(column=0,row=2,sticky="w")
         pr3.grid(column=0,row=3,sticky="w")
@@ -392,11 +392,11 @@ class Roll():
         posLbl.grid(column=0, row=0,sticky="w", padx=5)
 
         position = tk.IntVar(frm,self.pos)
-        pr1 = tk.Radiobutton(frm,text="Far Left", value=-1,variable=position,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
-        pr2 = tk.Radiobutton(frm,text="Left", value=-.5,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
+        pr1 = tk.Radiobutton(frm,text="Far Left", value=-2,variable=position,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        pr2 = tk.Radiobutton(frm,text="Left", value=-1,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
         pr3 = tk.Radiobutton(frm,text="Middle", value=0,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
-        pr4 = tk.Radiobutton(frm,text="Right", value=.5,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
-        pr5 = tk.Radiobutton(frm,text="Far Right", value=1,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
+        pr4 = tk.Radiobutton(frm,text="Right", value=1,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
+        pr5 = tk.Radiobutton(frm,text="Far Right", value=2,fg="white",variable=position,bg="black",highlightbackground="light grey",selectcolor="grey")
         pr1.grid(column=0,row=1,sticky="w")
         pr2.grid(column=0,row=2,sticky="w")
         pr3.grid(column=0,row=3,sticky="w")
