@@ -16,10 +16,13 @@ class Drivetrain:
     def drive(self, left: float, right: float):
         self.leftPower = left
         self.rightPower = right
-
-    def update(self):
         self.left_motor.set(self.bound(self.leftPower, -1, 1))
         self.right_motor.set(self.bound(self.rightPower, -1, 1))
+
+    def update(self):
+        #self.left_motor.set(self.bound(self.leftPower, -1, 1))
+        #self.right_motor.set(self.bound(self.rightPower, -1, 1))
+        pass
 
     @classmethod
     def bound(cls, value: float, min_value: float, max_value: float):

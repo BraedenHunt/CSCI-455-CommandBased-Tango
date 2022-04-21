@@ -21,7 +21,8 @@ class DriveCommand(Command):
         self.initialized = True
 
     def end(self, interrupted):
-        self.drivetrain(0, 0)
+        self.drivetrain.drive(0, 0)
+        self.drivetrain.update()
 
     def is_finished(self):
         return self.time >= self.time_to_drive
