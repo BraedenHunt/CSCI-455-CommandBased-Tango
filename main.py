@@ -48,6 +48,7 @@ def run_commands(queue):
                 current_command.update(current_time)
             else:
                 print("Ended Command")
+                current_command.end(False)
                 current_command = None
             time.sleep(1 / CLOCK_RATE)
 
