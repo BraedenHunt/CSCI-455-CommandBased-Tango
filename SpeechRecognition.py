@@ -8,7 +8,7 @@ from ServoCommand import ServoCommand
 from DriveCommand import DriveCommand
 
 class SpeechRecognition:
-    TEXT_MODE = True
+    TEXT_MODE = False
 
     def __init__(self, queue: Queue, robot_container: RobotContainer):
         self.robot_container = robot_container
