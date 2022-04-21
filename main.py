@@ -7,7 +7,6 @@ import time
 from RobotContainer import RobotContainer
 from DriveCommand import  DriveCommand
 from queue import Queue
-from SpeechRecognition import SpeechRecognition
 from robotGUI import RobotGUI
 
 CLOCK_RATE = 50.0 # HZ
@@ -15,7 +14,6 @@ CLOCK_RATE = 50.0 # HZ
 def main():
     robot_container = RobotContainer()
     queue = robot_container.command_queue
-    #speech = SpeechRecognition(queue, robot_container)
     window = RobotGUI(robot_container)
     window.title("Robot Control GUI")
     window.rowconfigure(0, minsize=480, weight=1)

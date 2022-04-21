@@ -3,6 +3,8 @@ import tkinter as tk
 from DriveCommand import DriveCommand
 from RobotContainer import RobotContainer
 from ServoCommand import ServoCommand
+from WaitForPhraseCommand import WaitForPhraseCommand
+
 
 class RobotGUI(tk.Tk):
     def __init__(self, robot_container : RobotContainer, master=None):
@@ -58,12 +60,12 @@ class RobotGUI(tk.Tk):
             for action in self.actions:
                 if isinstance(action, Drive):
                     command = DriveCommand(self.robot_container.drivetrain, action.dur/1000.0, action.dir * action.spd/6.0, action.dir * action.spd/6.0)
-                elif isinstance(action, Hear):
-                    pass
+
                 elif isinstance(action, Turn):
                     command = DriveCommand(self.robot_container.drivetrain, action.dur/1000.0, -1 * action.dir * action.spd / 6.0,
                                            action.dir * action.spd / 6.0)
-
+                elif isinstance(action, Hear):
+                    command = WaitForPhraseCommand(self.robot_container.speech_listener, action.listenFor)
                 elif isinstance(action, Speak):
                     pass
                 elif isinstance(action, Roll):
