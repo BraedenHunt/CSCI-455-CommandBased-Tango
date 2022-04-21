@@ -2,12 +2,19 @@ import threading
 from queue import Queue
 import speech_recognition as sr
 
+from Command import Command
+from RobotContainer import RobotContainer
+from ServoCommand import ServoCommand
+from DriveCommand import DriveCommand
 
 class SpeechRecognition:
     TEXT_MODE = False
 
-    def __init__(self, queue:Queue):
-        listening_thread = threading.Thread(target=self.listen, args=queue)
+    def __init__(self, queue: Queue, robot_container: RobotContainer):
+        self.robot_container = robot_container
+        self.speed = 1
+        listening_thread = threading.Thread(target=self.listen, args=[queue])
+        listening_thread.start()
 
     def listen(self, queue:Queue):
         while True:
@@ -27,7 +34,14 @@ class SpeechRecognition:
                         word = r.recognize_google(audio).lower()
                     print(word)
                     command = self.process_word(word)
-                    queue.put(command)
+                    if command is None:
+                        continue
+                    elif isinstance(command, Command):
+                        queue.put(command)
+                    else:
+                        for c in command:
+                            queue.put(c)
+
                 except sr.UnknownValueError:
                     print("I don't know that command")
 
@@ -36,74 +50,65 @@ class SpeechRecognition:
         if word == "look left":
             print('look left')
             #move head left
-            c.increment_joint('head_twist',reverse=False)
+            return ServoCommand(self.robot_container.head_twist, -1)
         elif word == "look right":
             print('look right')
             #move head right
-            c.increment_joint('head_twist',reverse=True)
+            return ServoCommand(self.robot_container.head_twist, 1)
         elif word  == "look up":
             print('look up')
             #move head up
-            c.increment_joint('head_tilt',reverse=False)
+            return ServoCommand(self.robot_container.head_tilt, 1)
         elif word == "look down":
             print('look down')
             #move head down
-            c.increment_joint('head_tilt',reverse=True)
+            return ServoCommand(self.robot_container.head_tilt, -1)
         elif word == "body left":
             print('body left')
             #move waist left
-            c.increment_joint('body_twist',reverse=False)
+            return ServoCommand(self.robot_container.waist, -1)
         elif word == "body right":
             print('body right')
             #move waist right
-            c.increment_joint('body_twist',reverse=True)
+            return ServoCommand(self.robot_container.waist, 1)
         elif word == "move forward":
             print('move forward')
             #move forward
-           # c.stop_thread_driving()
-            c.start_thread_driving(reverse = False)
+            return DriveCommand(self.robot_container.drivetrain, .5, self.speed, self.speed)
         elif word == "move back":
             print('move backwards')
            # c.stop_thread_driving()
             #move backwards
-            c.start_thread_driving(reverse = True)
+            return DriveCommand(self.robot_container.drivetrain, .5, -self.speed, -self.speed)
         elif word == "stop":
             print("STOPING")
-            c.stop_drive()
-            #c.stop_thread_driving()
+            return DriveCommand(self.robot_container.drivetrain, 0, 0, 0)
         elif word == "turn left":
             print('rotate left')
             #c.increment_joint('motor_dir', reverse = False)
-            c.turn(left = True)
-            #rotate left
+            return DriveCommand(self.robot_container.drivetrain, .5, -self.speed, self.speed)
         elif word == "turn right":
             print('rotate right')
-            c.turn(left = False)
-            #c.increment_joint('right_motor', reverse = False)
-            #rotate right
-            #TODO add a call to c.____
-
+            return DriveCommand(self.robot_container.drivetrain, .5, self.speed, -self.speed)
         elif word == "reset":
             print('reset positions')
             #reset servo and motor positions
-            c.reset_positions()
-            try:
-                _threading.start_new_thread(c.reset_positions(), ())
-            except:
-                print("Unable to start thread")
+            return [ServoCommand(self.robot_container.head_twist, 0), ServoCommand(self.robot_container.head_tilt, 0),
+                    ServoCommand(self.robot_container.waist, 0), DriveCommand(self.robot_container.drivetrain, 0, 0, 0)]
         elif word == "speed one" or word == "speed 1":
             print("Speed 1...")
-            c.set_speed(1)
+            self.speed = 1
+            return
         elif word == "speed two" or word == "speed 2" or word == "speed to" or word == "speed too":
             print("Speed 2")
-            c.set_speed(2)
+            self.speed = 2
+            return
         elif word == "speed three" or word == "speed 3":
             print("Speed 3")
-            c.set_speed(3)
+            self.speed = 3
+            return
         elif word == "exit":
-            c.kill_thread_driving()
-            return 1
+            return None
         else:
             print("Unknown Command")
 
-on_begin()

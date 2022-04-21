@@ -5,10 +5,12 @@
 import time
 from RobotContainer import RobotContainer
 from queue import Queue
+from SpeechRecognition import SpeechRecognition
 
 def main():
     robot_container = RobotContainer()
     queue = Queue()
+    speech = SpeechRecognition(queue, robot_container)
     current_command = None
     start_time = time.time() # time in seconds
     while True:

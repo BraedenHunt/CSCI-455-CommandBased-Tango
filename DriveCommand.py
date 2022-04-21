@@ -1,7 +1,7 @@
 from Drivetrain import Drivetrain
 from Command import Command
 
-class DriveForwardCommand(Command):
+class DriveCommand(Command):
 
     def __init__(self, drivetrain: Drivetrain, time_to_drive, left_speed, right_speed):
         self.drivetrain = drivetrain
