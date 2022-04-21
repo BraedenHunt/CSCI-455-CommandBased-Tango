@@ -33,6 +33,7 @@ class RobotGUI(tk.Tk):
         self.btn_speak = tk.Button(self.frm_buttons,bg="grey",fg="light blue", text="Speak", command=lambda: self.placeAction("Speak"))
 
         self.btn_reset = tk.Button(self.frm_buttons,bg="grey",fg="orange", text="Reset", command=lambda:self.reset())
+        self.btn_close = tk.Button(self.frm_buttons, text="Close",bg="grey",fg="red", command=lambda: self.destroy())
 
         self.btn_start.grid(row=0, column=0,sticky="ew",padx=5,pady=(5,50))
 
@@ -45,12 +46,14 @@ class RobotGUI(tk.Tk):
         self.btn_speak.grid(row=7, column=0,sticky="ew",padx=5,pady=5)
 
         self.btn_reset.grid(row=8, column=0, sticky="ew", padx=5,pady=(50,5))
+        self.btn_close.grid(row=9, column=0, sticky="ew", padx=5,pady=(50,5))
 
         self.frm_buttons.grid(row=0, column=0, sticky="ns")
         self.frm_timeline.grid(row=0, column=1, sticky="nsew")
 
     def start(self):
         if(self.actions):
+            self.command.clear()
             print("Starting:")
             for action in self.actions:
                 if isinstance(action, Drive):
