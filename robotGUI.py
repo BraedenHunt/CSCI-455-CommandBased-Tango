@@ -91,10 +91,10 @@ class RobotGUI(tk.Tk):
 
     def placeAction(self,title):
 
-        if(self.actCnt>28):
+        if(self.actCnt>18):
             top=tk.Toplevel(self)
             top.title("Error")
-            tk.Label(top, text="28 Action Commands is the Maximum.",bg="grey", fg="yellow", font=("Helvetica 20 bold")).pack()
+            tk.Label(top, text="18 Action Commands is the Maximum.",bg="grey", fg="yellow", font=("Helvetica 20 bold")).pack()
             return
 
         if(title=="Drive"):
@@ -114,7 +114,7 @@ class RobotGUI(tk.Tk):
         
         self.actCnt+=1
         self.colCnt+=1
-        if(self.colCnt==4):
+        if(self.colCnt==3):
             self.colCnt = 0
             self.rowCnt += 1
 
