@@ -1,6 +1,7 @@
 from Drivetrain import Drivetrain
 from USBController import USBController
 from PWMController import PWMController
+from queue import Queue
 
 class RobotContainer:
 
@@ -10,3 +11,5 @@ class RobotContainer:
         self.waist = PWMController(0, self.usb_controller)
         self.head_twist = PWMController(3, self.usb_controller)
         self.head_tilt = PWMController(4, self.usb_controller)
+        self.command_queue = Queue()
+        #self.speech_recognizer = SpeechRecognition(self.command_queue, self)
