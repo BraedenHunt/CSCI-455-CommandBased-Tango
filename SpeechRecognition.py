@@ -18,9 +18,12 @@ class SpeechListener:
         while not self.phrases_heard.empty():
             heard_phrase = self.phrases_heard.get()
             if phrase in heard_phrase:
-                self.phrases_heard.queue.clear()
+                self.clear_history()
                 return True
         return False
+
+    def clear_history(self):
+        self.phrases_heard.queue.clear()
 
     def listen(self):
         while True:
