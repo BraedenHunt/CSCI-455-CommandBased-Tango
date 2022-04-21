@@ -36,9 +36,11 @@ def main():
                 print("Current Command: " + str(current_command))
         else:
             if not current_command.initialized:
+                print("initializing command")
                 current_command.initialize(current_time)
                 current_command.update(current_time)
             if not current_command.is_finished():
+                print("updating command")
                 current_command.update(current_time)
             else:
                 print("Ended Command")
