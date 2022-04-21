@@ -16,7 +16,6 @@ def main():
     robot_container = RobotContainer()
     queue = robot_container.command_queue
     #speech = SpeechRecognition(queue, robot_container)
-    queue.put(DriveCommand(robot_container.drivetrain, 1, 1, -1))
     window = RobotGUI(robot_container)
     window.title("Robot Control GUI")
     window.rowconfigure(0, minsize=480, weight=1)

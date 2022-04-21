@@ -205,8 +205,8 @@ class Drive():
         dirLbl.grid(column=0, row=0,sticky="w")
 
         direction = tk.IntVar(frm,self.dir)
-        r1 = tk.Radiobutton(frm,text="Forward", value=-1,variable=direction,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
-        r2 = tk.Radiobutton(frm,text="Backwards", value=1,fg="white",variable=direction,bg="black",highlightbackground="light grey",selectcolor="grey")
+        r1 = tk.Radiobutton(frm,text="Forward", value=1,variable=direction,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        r2 = tk.Radiobutton(frm,text="Backwards", value=-1,fg="white",variable=direction,bg="black",highlightbackground="light grey",selectcolor="grey")
         r1.grid(column=0,row=1,sticky="w")
         r2.grid(column=0,row=2,sticky="w")
 
