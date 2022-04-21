@@ -45,8 +45,8 @@ class RobotGUI(tk.Tk):
         self.btn_waitForVoice.grid(row=6, column=0,sticky="ew",padx=5,pady=5)
         self.btn_speak.grid(row=7, column=0,sticky="ew",padx=5,pady=5)
 
-        self.btn_reset.grid(row=8, column=0, sticky="ew", padx=5,pady=(50,5))
-        self.btn_close.grid(row=9, column=0, sticky="ew", padx=5,pady=(50,5))
+        self.btn_reset.grid(row=8, column=0, sticky="ew", padx=5,pady=5)
+        self.btn_close.grid(row=9, column=0, sticky="ew", padx=5,pady=5)
 
         self.frm_buttons.grid(row=0, column=0, sticky="ns")
         self.frm_timeline.grid(row=0, column=1, sticky="nsew")
