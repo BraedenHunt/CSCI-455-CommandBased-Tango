@@ -53,7 +53,7 @@ class RobotGUI(tk.Tk):
 
     def start(self):
         if(self.actions):
-            self.command.clear()
+            self.command.queue.clear()
             print("Starting:")
             for action in self.actions:
                 if isinstance(action, Drive):
@@ -282,7 +282,7 @@ class Turn():
         spdLbl.grid(column=1, row=0,sticky="w", padx=5)
 
         speed = tk.IntVar(frm,self.spd)
-        sr1 = tk.Radiobutton(frm,text="Slow", value=1,variable=speed,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr1 = tk.Radiobutton(frm,text="Slow", value=1.5,variable=speed,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
         sr2 = tk.Radiobutton(frm,text="Medium", value=2,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
         sr3 = tk.Radiobutton(frm,text="Fast", value=3,fg="white",variable=speed,bg="black",highlightbackground="light grey",selectcolor="grey")
         sr1.grid(column=1,row=1,sticky="w")
