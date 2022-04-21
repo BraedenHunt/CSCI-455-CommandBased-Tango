@@ -53,7 +53,7 @@ class RobotGUI(tk.Tk):
 
     def start(self):
         if(self.actions):
-            self.command.queue.clear()
+            self.commands.queue.clear()
             print("Starting:")
             for action in self.actions:
                 if isinstance(action, Drive):
