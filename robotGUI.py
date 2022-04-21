@@ -67,6 +67,7 @@ class RobotGUI(tk.Tk):
 
     def start(self):
         if(self.actions):
+            print("starting to open animation")
             self.openAnimation()
             self.commands.queue.clear()
             print("Starting:")
@@ -184,6 +185,7 @@ class RobotGUI(tk.Tk):
         self.actions.append(action)
 
     def openAnimation(self):
+        print("Opening Animation")
         self.animation_window = tk.Toplevel(self)
         self.animation_window.title("Animation")
         self.animation_window.geometry("304x304")
