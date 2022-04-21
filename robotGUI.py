@@ -198,7 +198,8 @@ class RobotGUI(tk.Tk):
         self.anim = None
         self.gif_label = tk.Label(self.animation_window, image="")
         self.gif_label.pack()
-        self.animation_window.state('zoomed')
+        self.animation_window.geometry("800x480")
+
 
         self.animation_window.grab_set()
         self.animation()
