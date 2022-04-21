@@ -8,7 +8,7 @@ class TTSEngine:
         self.engine = pyttsx3.init()
         self.speaking_thread = None
         voices = self.engine.getProperty('voices')
-        self.voice_num = 1
+        self.voice_num = 2
         self.engine.setProperty('voice', voices[self.voice_num].id)
 
     def say_phrase(self, phrase, callback: callable):
