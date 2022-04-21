@@ -6,7 +6,7 @@ class DriveCommand(Command):
     def __init__(self, drivetrain: Drivetrain, time_to_drive, left_speed, right_speed):
         self.drivetrain = drivetrain
         self.time_to_drive = time_to_drive
-        self.left_speed = left_speed
+        self.left_speed = -left_speed
         self.right_speed = right_speed
         self.time = None
 
