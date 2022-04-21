@@ -7,7 +7,7 @@ class DriveCommand(Command):
         self.drivetrain = drivetrain
         self.time_to_drive = time_to_drive
         self.left_speed = left_speed
-        self.right_speed = -right_speed
+        self.right_speed = right_speed
         self.time = None
 
 
