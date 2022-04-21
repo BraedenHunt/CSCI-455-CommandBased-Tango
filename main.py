@@ -7,6 +7,8 @@ from RobotContainer import RobotContainer
 from queue import Queue
 from SpeechRecognition import SpeechRecognition
 
+CLOCK_RATE = 50.0 # HZ
+
 def main():
     robot_container = RobotContainer()
     queue = Queue()
@@ -18,14 +20,17 @@ def main():
         if current_command is None:
             if not queue.empty():
                 current_command = queue.get()
+                print("Current Command: " + str(current_command))
         else:
             if not current_command.initialized:
                 current_command.initialize(current_time)
+                current_command.update(current_time)
             if not current_command.is_finished():
                 current_command.update(current_time)
             else:
                 print("Ended Command")
                 current_command = None
+            time.sleep(1/ CLOCK_RATE)
 
 
 # Press the green button in the gutter to run the script.

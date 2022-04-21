@@ -14,6 +14,7 @@ class PWMController:
         self.setTarget(target)
 
     def setTarget(self, target):
+        target = int(target)
         self.current_state = target
         lsb = target & 0x7f  # 7 bits for least significant byte
         msb = (target >> 7) & 0x7f  # shift 7 and take next 7 bits for msb

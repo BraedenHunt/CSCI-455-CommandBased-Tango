@@ -8,43 +8,44 @@ from ServoCommand import ServoCommand
 from DriveCommand import DriveCommand
 
 class SpeechRecognition:
-    TEXT_MODE = False
+    TEXT_MODE = True
 
     def __init__(self, queue: Queue, robot_container: RobotContainer):
         self.robot_container = robot_container
         self.speed = 1
         listening_thread = threading.Thread(target=self.listen, args=[queue])
+        listening_thread.setDaemon(True)
         listening_thread.start()
 
     def listen(self, queue:Queue):
         while True:
-            with sr.Microphone() as source:
-                r = sr.Recognizer()
-                r.adjust_for_ambient_noise(source)
-                r.dynamic_energy_threshold = True
-                try:
-                    if self.TEXT_MODE:
-                        print("Waiting for text input")
-                        word = input()
-                    else:
+            if self.TEXT_MODE:
+                print("Waiting for text input: ")
+                word = input()
+            else:
+                with sr.Microphone() as source:
+                    r = sr.Recognizer()
+                    r.adjust_for_ambient_noise(source)
+                    r.dynamic_energy_threshold = True
+                    try:
+
                         print("Listening")
 
                         audio = r.listen(source)
                         print("Got audio")
                         word = r.recognize_google(audio).lower()
-                    print(word)
-                    command = self.process_word(word)
-                    if command is None:
-                        continue
-                    elif isinstance(command, Command):
-                        queue.put(command)
-                    else:
-                        for c in command:
-                            queue.put(c)
-
-                except sr.UnknownValueError:
-                    print("I don't know that command")
-
+                    except sr.UnknownValueError:
+                        print("I don't know that command")
+                        word = ""
+            print(word)
+            command = self.process_word(word)
+            if command is None:
+                continue
+            elif isinstance(command, Command):
+                queue.put(command)
+            else:
+                for c in command:
+                    queue.put(c)
 
     def process_word(self, word):
         if word == "look left":
@@ -107,8 +108,6 @@ class SpeechRecognition:
             print("Speed 3")
             self.speed = 3
             return
-        elif word == "exit":
-            return None
         else:
             print("Unknown Command")
 
