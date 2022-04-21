@@ -54,11 +54,11 @@ class RobotGUI(tk.Tk):
             print("Starting:")
             for action in self.actions:
                 if isinstance(action, Drive):
-                    command = DriveCommand(self.robot_container.drivetrain, action.dur, action.dir * action.spd/3.0, action.dir * action.spd/3.0)
+                    command = DriveCommand(self.robot_container.drivetrain, action.dur/1000.0, action.dir * action.spd/3.0, action.dir * action.spd/3.0)
                 elif isinstance(action, Hear):
                     pass
                 elif isinstance(action, Turn):
-                    command = DriveCommand(self.robot_container.drivetrain, action.dur, -1 * action.dir * action.spd / 3.0,
+                    command = DriveCommand(self.robot_container.drivetrain, action.dur/1000.0, -1 * action.dir * action.spd / 3.0,
                                            action.dir * action.spd / 3.0)
 
                 elif isinstance(action, Speak):
