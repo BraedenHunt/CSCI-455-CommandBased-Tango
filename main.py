@@ -42,7 +42,7 @@ def run_commands(queue):
                 current_command.initialize(current_time)
                 current_command.update(current_time)
             if not current_command.is_finished():
-                print("Updating")
+                #print("Updating")
                 current_command.update(current_time)
             else:
                 print("Ended Command")

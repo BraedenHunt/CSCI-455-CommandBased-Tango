@@ -2,6 +2,7 @@ import tkinter as tk
 
 from DriveCommand import DriveCommand
 from RobotContainer import RobotContainer
+from SayPhraseCommand import SayPhraseCommand
 from ServoCommand import ServoCommand
 from WaitForPhraseCommand import WaitForPhraseCommand
 
@@ -67,7 +68,7 @@ class RobotGUI(tk.Tk):
                 elif isinstance(action, Hear):
                     command = WaitForPhraseCommand(self.robot_container.speech_listener, action.listenFor)
                 elif isinstance(action, Speak):
-                    pass
+                    command = SayPhraseCommand(action.say)
                 elif isinstance(action, Roll):
                     command = ServoCommand(self.robot_container.head_twist, action.pos/2.0)
                 elif isinstance(action, Torso):
