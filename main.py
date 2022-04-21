@@ -25,28 +25,6 @@ def main():
     command_thread.start()
     window.mainloop()
 
-    print("test")
-    current_command = None
-    start_time = time.time() # time in seconds
-    while True:
-        current_time = time.time()-start_time # time in seconds
-        if current_command is None:
-            if not queue.empty():
-                current_command = queue.get()
-                print("Current Command: " + str(current_command))
-        else:
-            if not current_command.initialized:
-                print("initializing command")
-                current_command.initialize(current_time)
-                current_command.update(current_time)
-            if not current_command.is_finished():
-                print("updating command")
-                current_command.update(current_time)
-            else:
-                print("Ended Command")
-                current_command = None
-            time.sleep(1/ CLOCK_RATE)
-
 
 def run_commands(queue):
     print("test")
@@ -60,9 +38,11 @@ def run_commands(queue):
                 print("Current Command: " + str(current_command))
         else:
             if not current_command.initialized:
+                print("Initializing")
                 current_command.initialize(current_time)
                 current_command.update(current_time)
             if not current_command.is_finished():
+                print("Updating")
                 current_command.update(current_time)
             else:
                 print("Ended Command")
