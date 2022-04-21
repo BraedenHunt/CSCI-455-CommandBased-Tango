@@ -22,7 +22,6 @@ class DriveCommand(Command):
 
     def end(self, interrupted):
         self.drivetrain.drive(0, 0)
-        self.drivetrain.update()
 
     def is_finished(self):
         return self.time >= self.time_to_drive
