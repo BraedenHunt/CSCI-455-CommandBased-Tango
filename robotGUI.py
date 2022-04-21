@@ -59,12 +59,11 @@ class RobotGUI(tk.Tk):
         self.frm_gif = tk.Frame(self, relief=tk.RAISED, bd=2, bg="blue")
 
 
-        self.openAnimation()
+        #self.openAnimation()
 
 
         self.frm_buttons.grid(row=0, column=0, sticky="ns")
         self.frm_timeline.grid(row=0, column=1, sticky="nsew")
-        self.frm_gif.grid(row=1, column=1, sticky="nsew")
 
 
     def start(self):
