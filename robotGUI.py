@@ -1,5 +1,8 @@
 import tkinter as tk
 
+import PIL
+from PIL.Image import Image
+
 from DriveCommand import DriveCommand
 from RobotContainer import RobotContainer
 from SayPhraseCommand import SayPhraseCommand
@@ -51,8 +54,18 @@ class RobotGUI(tk.Tk):
         self.btn_reset.grid(row=8, column=0, sticky="ew", padx=5,pady=5)
         self.btn_close.grid(row=9, column=0, sticky="ew", padx=5,pady=5)
 
+
+
+        self.frm_gif = tk.Frame(self, relief=tk.RAISED, bd=2, bg="blue")
+
+
+        self.openAnimation()
+
+
         self.frm_buttons.grid(row=0, column=0, sticky="ns")
         self.frm_timeline.grid(row=0, column=1, sticky="nsew")
+        self.frm_gif.grid(row=1, column=1, sticky="nsew")
+
 
     def start(self):
         if(self.actions):
@@ -171,6 +184,33 @@ class RobotGUI(tk.Tk):
         self.actionWidgets.append(widget)
         self.actions.append(action)
 
+    def openAnimation(self):
+        self.animation_window = tk.Toplevel(self)
+        self.animation_window.title("Animation")
+        self.animation_window.geometry("304x304")
+        self.file = "robot_eyes.gif"
+        self.info = PIL.Image.open(self.file)
+
+        self.frames = self.info.n_frames
+        self.im = [tk.PhotoImage(file=self.file, format=f"gif -index {i}") for i in range(self.frames)]
+
+        self.count = 0
+        self.anim = None
+        self.gif_label = tk.Label(self.animation_window, image="")
+        self.gif_label.pack()
+        self.animation_window.state('zoomed')
+
+        self.animation_window.grab_set()
+        self.animation()
+
+    def animation(self):
+        im2 = self.im[self.count]
+
+        self.gif_label.configure(image=im2)
+        self.count += 1
+        if self.count == self.frames:
+            self.count = 0
+        self.anim = self.after(50,lambda :self.animation())
 
 #Action Objects
 class Drive():
