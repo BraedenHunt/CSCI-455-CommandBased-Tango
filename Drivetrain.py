@@ -12,6 +12,7 @@ class Drivetrain:
         self.MAX_ACCELERATION = max_accel
         self.right_motor: PWMController = PWMController(1, self.usb_controller)
         self.left_motor: PWMController = PWMController(2, self.usb_controller)
+        self.drive(0,0)
 
     def drive(self, left: float, right: float):
         self.leftPower = left
