@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 
 import PIL
 from PIL.Image import Image
@@ -65,6 +66,7 @@ class RobotGUI(tk.Tk):
     def start(self):
         if(self.actions):
             print("starting to open animation")
+            os.system("animate robot_eyes.gif")
             #self.openAnimation()
             self.commands.queue.clear()
             print("Starting:")
