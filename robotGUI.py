@@ -1,3 +1,4 @@
+import threading
 import tkinter as tk
 import os
 
@@ -66,7 +67,9 @@ class RobotGUI(tk.Tk):
     def start(self):
         if(self.actions):
             print("starting to open animation")
-            os.system("animate robot_eyes.gif")
+            animation_thread = threading.Thread(target=os.system, args = ["animate robot_eyes.gif"])
+            animation_thread.setDaemon(True)
+            animation_thread.start()
             #self.openAnimation()
             self.commands.queue.clear()
             print("Starting:")
