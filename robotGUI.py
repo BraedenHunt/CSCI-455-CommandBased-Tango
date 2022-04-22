@@ -185,7 +185,7 @@ class RobotGUI(tk.Tk):
         print("Opening Animation")
         self.animation_window = tk.Toplevel(self)
         self.animation_window.title("Animation")
-        self.animation_window.geometry("304x304")
+        self.animation_window.geometry("594x204")
         self.file = "robot_eyes.gif"
         self.info = PIL.Image.open(self.file)
 
