@@ -527,7 +527,7 @@ class Hear():
     def openOptions(self):
         self.options = tk.Tk()
         self.options.title("Wait for Voice Options")
-        self.options.geometry("130x105")
+        self.options.geometry("160x105")
         
         frm = tk.Frame(self.options,bd=2,highlightbackground="white", highlightthickness=1,bg="black")
         frm.grid(column=0, row=0, sticky="nesw")
@@ -544,7 +544,7 @@ class Hear():
         lr3.grid(column=0,row=3,sticky="w")
         
         btn = tk.Button(frm,text="Save and Close",fg="white",bg="grey",highlightbackground="light grey",command=lambda: self.saveAndClose(listen.get()))
-        btn.grid(column=0,row=2,sticky="w",pady=(15,5))
+        btn.grid(column=0,row=4,sticky="w",pady=(15,5))
 
 
     def saveAndClose(self,listen):
@@ -564,14 +564,6 @@ class Speak():
         lbl=tk.Label(frm,text=actionTitle,bg="black",fg="white",height=2,width=15)
         lbl.grid(column=0, row=0)
 
-        say = tk.StringVar(frm,self.say)
-        sr1 = tk.Radiobutton(frm,text="Hello World", value="hello world",variable=say,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
-        sr2 = tk.Radiobutton(frm,text="I am a robot", value="I am a robot",fg="white",variable=say,bg="black",highlightbackground="light grey",selectcolor="grey")
-        sr3 = tk.Radiobutton(frm,text="CATCHPHRASE", value="CATCHPHRASE",fg="white",variable=say,bg="black",highlightbackground="light grey",selectcolor="grey")
-        sr1.grid(column=0,row=1,sticky="w")
-        sr2.grid(column=0,row=2,sticky="w")
-        sr3.grid(column=0,row=3,sticky="w")
-
         btn = tk.Button(frm,text="Edit",fg="white",bg="grey",highlightbackground="light grey",height=2,width=5, command = lambda: self.openOptions())
         btn.grid(column=1,row=0)
 
@@ -583,7 +575,7 @@ class Speak():
     def openOptions(self):
         self.options = tk.Tk()
         self.options.title("Speak Options")
-        self.options.geometry("130x105")
+        self.options.geometry("160x150")
         
         frm = tk.Frame(self.options,bd=2,highlightbackground="white", highlightthickness=1,bg="black")
         frm.grid(column=0, row=0, sticky="nesw")
@@ -592,11 +584,15 @@ class Speak():
         sayLbl.grid(column=0, row=0,sticky="w", padx=5)
 
         say = tk.StringVar(frm,self.say)
-        durEntry = tk.Entry(frm, fg="white",bg="black",highlightbackground="light grey", textvariable=say)
-        durEntry.grid(column=0,row=1,sticky="w")
+        sr1 = tk.Radiobutton(frm,text="Hello World", value="hello world",variable=say,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr2 = tk.Radiobutton(frm,text="I am a robot", value="I am a robot",fg="white",variable=say,bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr3 = tk.Radiobutton(frm,text="CATCHPHRASE", value="CATCHPHRASE",fg="white",variable=say,bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr1.grid(column=0,row=1,sticky="w")
+        sr2.grid(column=0,row=2,sticky="w")
+        sr3.grid(column=0,row=3,sticky="w")
         
         btn = tk.Button(frm,text="Save and Close",fg="white",bg="grey",highlightbackground="light grey",command=lambda: self.saveAndClose(say.get()))
-        btn.grid(column=0,row=2,sticky="w",pady=(15,5))
+        btn.grid(column=0,row=4,sticky="w",pady=(15,5))
 
 
     def saveAndClose(self,say):
