@@ -536,8 +536,12 @@ class Hear():
         hearLbl.grid(column=0, row=0,sticky="w", padx=5)
 
         listen = tk.StringVar(frm,self.listenFor)
-        durEntry = tk.Entry(frm, fg="white",bg="black",highlightbackground="light grey", textvariable=listen)
-        durEntry.grid(column=0,row=1,sticky="w")
+        lr1 = tk.Radiobutton(frm,text="Hello", value="hello",variable=listen,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        lr2 = tk.Radiobutton(frm,text="Robot", value="robot",fg="white",variable=listen,bg="black",highlightbackground="light grey",selectcolor="grey")
+        lr3 = tk.Radiobutton(frm,text="Thunder", value="thunder",fg="white",variable=listen,bg="black",highlightbackground="light grey",selectcolor="grey")
+        lr1.grid(column=0,row=1,sticky="w")
+        lr2.grid(column=0,row=2,sticky="w")
+        lr3.grid(column=0,row=3,sticky="w")
         
         btn = tk.Button(frm,text="Save and Close",fg="white",bg="grey",highlightbackground="light grey",command=lambda: self.saveAndClose(listen.get()))
         btn.grid(column=0,row=2,sticky="w",pady=(15,5))
@@ -550,7 +554,7 @@ class Hear():
 
 class Speak():
     def __init__(self):
-        self.say="Hello World"
+        self.say="hello world"
 
     def createLayout(self,parentFrame,count):
         actionTitle = "#%d. Speak" % (count)  
@@ -559,6 +563,14 @@ class Speak():
            
         lbl=tk.Label(frm,text=actionTitle,bg="black",fg="white",height=2,width=15)
         lbl.grid(column=0, row=0)
+
+        say = tk.StringVar(frm,self.say)
+        sr1 = tk.Radiobutton(frm,text="Hello World", value="hello world",variable=say,fg="white",bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr2 = tk.Radiobutton(frm,text="I am a robot", value="I am a robot",fg="white",variable=say,bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr3 = tk.Radiobutton(frm,text="CATCHPHRASE", value="CATCHPHRASE",fg="white",variable=say,bg="black",highlightbackground="light grey",selectcolor="grey")
+        sr1.grid(column=0,row=1,sticky="w")
+        sr2.grid(column=0,row=2,sticky="w")
+        sr3.grid(column=0,row=3,sticky="w")
 
         btn = tk.Button(frm,text="Edit",fg="white",bg="grey",highlightbackground="light grey",height=2,width=5, command = lambda: self.openOptions())
         btn.grid(column=1,row=0)
