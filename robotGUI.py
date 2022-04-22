@@ -197,7 +197,6 @@ class RobotGUI(tk.Tk):
         self.gif_label = tk.Label(self.animation_window, image="")
         self.gif_label.pack()
 
-        self.animation_window.grab_set()
         self.animation()
 
     def animation(self):
