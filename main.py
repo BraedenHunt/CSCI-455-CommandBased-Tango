@@ -9,6 +9,8 @@ from Animation import Animation
 from RobotContainer import RobotContainer
 from DriveCommand import  DriveCommand
 from queue import Queue
+
+from ServoCommand import ServoCommand
 from robotGUI import RobotGUI
 
 CLOCK_RATE = 50.0 # HZ
@@ -17,21 +19,35 @@ def main():
     robot_container = RobotContainer()
     queue = robot_container.command_queue
 
+    add_slash_commands(queue, robot_container)
     '''    animation_controller = Animation()
         animation_thread = threading.Thread(target=animation_controller.start)
         animation_thread.setDaemon(True)
         animation_thread.start()'''
-    window = RobotGUI(robot_container)
-    window.title("Robot Control GUI")
-    window.rowconfigure(0, minsize=480, weight=1)
-    window.columnconfigure(1, minsize=800, weight=1)
-    window.geometry("800x480")
+    #window = RobotGUI(robot_container)
+    #window.title("Robot Control GUI")
+    #window.rowconfigure(0, minsize=480, weight=1)
+    #window.columnconfigure(1, minsize=800, weight=1)
+    #//window.geometry("800x480")
     command_thread = threading.Thread(target=run_commands, args=[queue])
     command_thread.setDaemon(True)
     command_thread.start()
-    window.mainloop()
+    #window.mainloop()
 
 
+
+def add_slash_commands(queue: Queue, robot_container:RobotContainer):
+    inner_delay = 0.05
+    between_delay = 1
+    queue.put(ServoCommand(robot_container.shoulder_x, 1, delayed_end=inner_delay))
+    queue.put(ServoCommand(robot_container.bicep_flex, 1, delayed_end=inner_delay))
+    queue.put(ServoCommand(robot_container.shoulder_y, -1, delayed_end=inner_delay))
+    queue.put(ServoCommand(robot_container.wrist_flex, 0, delayed_end=between_delay))
+
+    queue.put(ServoCommand(robot_container.shoulder_x, 0, delayed_end=inner_delay))
+    queue.put(ServoCommand(robot_container.bicep_flex, 0, delayed_end=inner_delay))
+    queue.put(ServoCommand(robot_container.shoulder_y, 0, delayed_end=inner_delay))
+    queue.put(ServoCommand(robot_container.wrist_flex, 0, delayed_end=inner_delay))
 
 def run_commands(queue):
     print("test")
