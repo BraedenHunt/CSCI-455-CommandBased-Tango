@@ -5,14 +5,14 @@ def main():
     usb = USBController()
 
     while True:
-        x = input("Servo number [q to quit]: ")
+        x = input("[Servo number] [position] (q to quit): ")
         if x == 'q':
             exit()
-        x = int(x)
-        pwm_controller = PWMController(x, usb)
-        y = input("Position: ")
-        y = int(y)
-        pwm_controller.set(y)
+        x = x.split()
+        port = int(x[0])
+        pos = float(x[1])
+        pwm_controller = PWMController(port, usb)
+        pwm_controller.set(pos)
 
 if __name__ == "__main__":
     main()
