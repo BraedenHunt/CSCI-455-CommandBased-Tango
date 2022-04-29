@@ -522,7 +522,7 @@ class GameMap():
         self.drive_time = 1
         self.queue = queue
         self.robot_container = robot_container
-        self.speed = .3
+        self.speed = .7
 
     def turnAndMove(self, dir):
         if self.facing_dir == "north":
