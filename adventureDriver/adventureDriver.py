@@ -6,6 +6,7 @@ from queue import Queue
 from DriveCommand import DriveCommand
 from RobotContainer import RobotContainer
 
+rb_container = None
 startDesc = "You awake in an empty dungeon cell... how will you escape?\nBeware, as you only have limited time to make it out!"
 
 startRoomDesc = "An empty cell, you started here."
@@ -238,7 +239,7 @@ class Other():
     
     def act(self,knight):
         if(not self.used):
-            answer = input("Something is off about this room, investigate? [y/n]: ")
+            answer = speech_input("Something is off about this room, investigate? [y/n]: ")
             if answer == 'n':
                 return
             else:
@@ -294,7 +295,7 @@ class Key():
             else:
                 print("A riddle reads: The turning of the seasons reveals the key")
 
-            choice = input("What do you choose? [square, triangle, leave]: ")
+            choice = speech_input("What do you choose? [square, triangle, leave]: ")
 
             if choice == 'square':
                 numChoice = 0
@@ -453,7 +454,7 @@ class Encounter():
     def act(self,knight):
         print(self.showEnemies())
         while(self.alive):     
-            command = input("Enemies! 'fight' or 'run'? (You have " + str(knight.hp) + " health left.):")
+            command = speech_input("Enemies! 'fight' or 'run'? (You have " + str(knight.hp) + " health left.):")
             if command == "fight":
                 for enemy in self.enemies:
                     knight.hp -= enemy.attack()
@@ -606,7 +607,7 @@ class GameMap():
         if self.check_key_exist(self.adventureMap[self.curRoom-1],'west'):
             dirStr+='west '
         dirStr+='):'
-        direction = input(dirStr)
+        direction = speech_input(dirStr)
         if direction == 'potion':
             turnInc = 0
             if self.knight.potion == 0:
@@ -800,6 +801,8 @@ class Game():
         self.you = Knight()
         self.queue = queue
         self.robot_container = robot_container
+        global rb_container
+        rb_container = self.robot_container
         self.map = GameMap(adventureMap,self.you, easy, self.queue, self.robot_container)
         self.win = False;
 
@@ -825,7 +828,7 @@ class Game():
 # Helper Methods
 ###############################################################################################
 def playAgain():
-    pa=input("Play Again? [y/n]: ")
+    pa=speech_input("Play Again? [y/n]: ")
     if pa == 'y':
         os.execv(sys.argv[0], sys.argv)
     elif pa == 'n':
@@ -836,8 +839,13 @@ def playAgain():
     exit
 
 
+def speech_input(output_string):
+    print(output_string)
+    rb_container.speech_listener.clear_history()
+    while(rb_container.speech_listener.phrases_heard.empty()):
+        pass
+    return rb_container.speech_listener.phrases_heard.get()
 
-    
 ###############################################################################################
 # Main Method
 ###############################################################################################

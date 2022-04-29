@@ -20,5 +20,5 @@ class RobotContainer:
         self.wrist_flex = PWMController(9, self.usb_controller)
         self.wrist_rotate = PWMController(10, self.usb_controller)
         self.command_queue = Queue()
-        #self.speech_listener = SpeechListener()
-        #self.speaker = TTSEngine()
+        self.speech_listener = SpeechListener()
+        self.speaker = TTSEngine()
