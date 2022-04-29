@@ -28,9 +28,9 @@ class SpeechListener:
     def listen(self):
         while True:
             if self.TEXT_MODE:
-                print("Waiting for text input: ")
+                #print("Waiting for text input: ")
                 word = input()
-                print(word)
+                #print(word)
                 self.phrases_heard.put(word)
             else:
                 with sr.Microphone() as source:
@@ -39,12 +39,12 @@ class SpeechListener:
                     r.dynamic_energy_threshold = True
                     try:
 
-                        print("Listening")
+                        #print("Listening")
 
                         audio = r.listen(source)
-                        print("Got audio")
+                        #print("Got audio")
                         word = r.recognize_google(audio).lower()
-                        print(word)
+                        #print(word)
                         self.phrases_heard.put(word)
                     except sr.UnknownValueError:
                         print("I didn't understand that")

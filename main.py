@@ -11,6 +11,7 @@ from DriveCommand import  DriveCommand
 from queue import Queue
 
 from ServoCommand import ServoCommand
+from adventureDriver.adventureDriver import Game
 from robotGUI import RobotGUI
 
 CLOCK_RATE = 50.0 # HZ
@@ -19,21 +20,19 @@ def main():
     robot_container = RobotContainer()
     queue = robot_container.command_queue
 
-    add_slash_commands(queue, robot_container)
-    '''    animation_controller = Animation()
-        animation_thread = threading.Thread(target=animation_controller.start)
-        animation_thread.setDaemon(True)
-        animation_thread.start()'''
-    #window = RobotGUI(robot_container)
-    #window.title("Robot Control GUI")
-    #window.rowconfigure(0, minsize=480, weight=1)
-    #window.columnconfigure(1, minsize=800, weight=1)
-    #//window.geometry("800x480")
+    #add_slash_commands(queue, robot_container)
+
+
     command_thread = threading.Thread(target=run_commands, args=[queue])
     command_thread.start()
-    #window.mainloop()
+
+    game_driver_thread = threading.Thread(target=run_game_driver, args=[queue])
+    game_driver_thread.start()
 
 
+def run_game_driver(queue: Queue):
+    g = Game(easy=False)
+    g.play()
 
 def add_slash_commands(queue: Queue, robot_container:RobotContainer):
     inner_delay = .05
