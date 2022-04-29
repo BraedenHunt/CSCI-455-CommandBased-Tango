@@ -58,17 +58,17 @@ def run_commands(queue):
         if current_command is None:
             if not queue.empty():
                 current_command = queue.get()
-                print("Current Command: " + str(current_command))
+                #print("Current Command: " + str(current_command))
         else:
             if not current_command.initialized:
-                print("Initializing")
+                #print("Initializing")
                 current_command.initialize(current_time)
                 current_command.update(current_time)
             if not current_command.is_finished():
                 #print("Updating")
                 current_command.update(current_time)
             else:
-                print("Ended Command")
+                #print("Ended Command")
                 current_command.end(False)
                 current_command = None
             time.sleep(1 / CLOCK_RATE)
