@@ -36,7 +36,7 @@ def main():
 
 
 def add_slash_commands(queue: Queue, robot_container:RobotContainer):
-    inner_delay = 1
+    inner_delay = .05
     between_delay = 1
     queue.put(ServoCommand(robot_container.shoulder_x, 1, delayed_end=inner_delay))
     queue.put(ServoCommand(robot_container.bicep_flex, 1, delayed_end=inner_delay))
