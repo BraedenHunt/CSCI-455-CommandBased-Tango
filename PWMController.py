@@ -14,7 +14,7 @@ class PWMController:
         self.setTarget(target)
 
     def setTarget(self, target):
-        #print("Moving {} to {}".format(self.channel, target))
+        print("Moving {} to {}".format(self.channel, target))
         target = int(target)
         self.current_state = target
         lsb = target & 0x7f  # 7 bits for least significant byte
