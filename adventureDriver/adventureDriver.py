@@ -642,6 +642,7 @@ class GameMap():
                 else:
                     self.curRoom = random.randint(1,25)
                     print(self.roomContents[self.curRoom-1].desc)
+                    self.queue.put(DriveCommand(self.robot_container, 4*self.turn_time, self.speed, -self.speed))
             elif str(self.roomContents[self.curRoom-1].content) == "Finish":
                return (self.roomContents[self.curRoom-1].content.act(self.knight), turnInc)
             else:
