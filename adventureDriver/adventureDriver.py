@@ -1,6 +1,10 @@
 import random
 import os
 import sys
+from queue import Queue
+
+from DriveCommand import DriveCommand
+from RobotContainer import RobotContainer
 
 startDesc = "You awake in an empty dungeon cell... how will you escape?\nBeware, as you only have limited time to make it out!"
 
@@ -506,13 +510,89 @@ class Monster():
     
 
 class GameMap():
-    def __init__(self, adventureMap,knight,easy):
+    def __init__(self, adventureMap,knight,easy, queue:Queue, robot_container: RobotContainer):
         self.knight = knight
         self.adventureMap = adventureMap
         self.curRoom = None
         self.endRoom = None
         self.roomContents=[None]*25
         self.populateMap(easy)
+        self.facing_dir = "north"
+        self.turn_time = 1
+        self.drive_time = 1
+        self.queue = queue
+        self.robot_container = robot_container
+        self.speed = .3
+
+    def turnAndMove(self, dir):
+        if self.facing_dir == "north":
+            if dir == "north":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "east":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "south":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, 2*self.turn_time, self.speed, -self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "west":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+        elif self.facing_dir == "east":
+            if dir == "north":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "east":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "south":
+                self.queue.put(
+                    DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "west":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, 2*self.turn_time, self.speed, -self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+        elif self.facing_dir == "south":
+            if dir == "north":
+                self.queue.put(
+                    DriveCommand(self.robot_container.drivetrain, 2 * self.turn_time, -self.speed, self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "east":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "south":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "west":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+        elif self.facing_dir == "west":
+            if dir == "north":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "east":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, 2*self.turn_time, -self.speed, self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "south":
+                self.queue.put(
+                    DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+            elif dir == "west":
+                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+                return
+
 
     def getDir(self):
         turnInc = 1
@@ -548,6 +628,9 @@ class GameMap():
         elif self.check_key_exist(self.adventureMap[self.curRoom-1],direction):
             #print("Going to room: " + str(adventureMap[self.curRoom-1][direction]))
             self.curRoom = adventureMap[self.curRoom-1][direction]
+            self.turnAndMove(direction)
+            self.facing_dir = direction
+
             print("")
             print(self.roomContents[self.curRoom-1].desc)
             if str(self.roomContents[self.curRoom-1].content) == "Hint":
@@ -711,10 +794,12 @@ class GameMap():
 
 
 class Game():
-    def __init__(self, easy):
+    def __init__(self, queue: Queue, robot_container:RobotContainer, easy):
         self.turnCount = 0
         self.you = Knight()
-        self.map = GameMap(adventureMap,self.you,easy)
+        self.queue = queue
+        self.robot_container = robot_container
+        self.map = GameMap(adventureMap,self.you, easy, self.queue, self.robot_container)
         self.win = False;
 
 
