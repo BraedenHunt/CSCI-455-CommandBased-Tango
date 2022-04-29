@@ -10,7 +10,6 @@ class ServoCommand(Command):
 
     def __init__(self, servo: PWMController, target, delayed_end=0.1):
         self.servo = servo
-        self.servo.set(0)
         self.target = target
         self.start_time = None
         self.delayed_end = delayed_end
