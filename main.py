@@ -30,7 +30,6 @@ def main():
     #window.columnconfigure(1, minsize=800, weight=1)
     #//window.geometry("800x480")
     command_thread = threading.Thread(target=run_commands, args=[queue])
-    command_thread.setDaemon(True)
     command_thread.start()
     #window.mainloop()
 
