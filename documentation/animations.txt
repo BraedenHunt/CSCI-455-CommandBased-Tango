@@ -1,0 +1,15 @@
+bicep flex - 6 - 
+shoulder x - 7 - 0
+shoulder y - 11 - -.5
+gripper - 8 - 0
+wrist flex - 9 - 0
+wrist rotate - 10 - 0
+
+
+slash
+7: 1 - 0
+6: 1 - 0
+11: -1 - 0
+9: 1 - 0
+
+
