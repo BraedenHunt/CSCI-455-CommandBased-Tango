@@ -695,6 +695,7 @@ class GameMap():
 
     def start(self):
         say(startDesc)
+        say("hi")
 
     def populateMap(self,easy):
         rooms = [i+1 for i in range(25)]
