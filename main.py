@@ -26,26 +26,14 @@ def main():
     command_thread = threading.Thread(target=run_commands, args=[queue])
     command_thread.start()
 
-    game_driver_thread = threading.Thread(target=run_game_driver, args=[queue])
+    game_driver_thread = threading.Thread(target=run_game_driver, args=[queue, robot_container])
     game_driver_thread.start()
 
 
-def run_game_driver(queue: Queue):
-    g = Game(easy=False)
+def run_game_driver(queue: Queue, robot_container):
+    g = Game(queue, robot_container,easy=False)
     g.play()
 
-def add_slash_commands(queue: Queue, robot_container:RobotContainer):
-    inner_delay = .05
-    between_delay = 1
-    queue.put(ServoCommand(robot_container.shoulder_x, 1, delayed_end=inner_delay))
-    queue.put(ServoCommand(robot_container.bicep_flex, 1, delayed_end=inner_delay))
-    queue.put(ServoCommand(robot_container.shoulder_y, -1, delayed_end=inner_delay))
-    queue.put(ServoCommand(robot_container.wrist_flex, 0, delayed_end=between_delay))
-
-    queue.put(ServoCommand(robot_container.shoulder_x, 0, delayed_end=inner_delay))
-    queue.put(ServoCommand(robot_container.bicep_flex, 0, delayed_end=inner_delay))
-    queue.put(ServoCommand(robot_container.shoulder_y, 0, delayed_end=inner_delay))
-    queue.put(ServoCommand(robot_container.wrist_flex, 0, delayed_end=inner_delay))
 
 def run_commands(queue):
     print("test")

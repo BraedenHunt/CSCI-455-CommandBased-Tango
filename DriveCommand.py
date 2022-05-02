@@ -9,6 +9,7 @@ class DriveCommand(Command):
         self.left_speed = -left_speed
         self.right_speed = right_speed
         self.time = None
+        self.drivetrain.drive(0,0)
 
 
     def update(self, time):
