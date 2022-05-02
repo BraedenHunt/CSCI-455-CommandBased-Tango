@@ -4,6 +4,7 @@ import sys
 from queue import Queue
 
 from DriveCommand import DriveCommand
+from ListenCommand import ListenCommand
 from RobotContainer import RobotContainer
 from SayPhraseCommand import SayPhraseCommand
 
@@ -844,9 +845,7 @@ def playAgain():
 
 def speech_input(output_string):
     say(output_string)
-    rb_container.speech_listener.clear_history()
-    while(rb_container.speech_listener.phrases_heard.empty()):
-        pass
+    rb_container.command_queue.put(ListenCommand(rb_container.speech_listener))
     return rb_container.speech_listener.phrases_heard.get()
 
 def say(output_string):
