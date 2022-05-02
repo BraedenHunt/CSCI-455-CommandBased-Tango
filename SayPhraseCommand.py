@@ -30,4 +30,5 @@ class SayPhraseCommand(Command):
         self.finished = True
 
     def is_finished(self):
+        print("finished speaking phrase: " + self.phrase)
         return self.finished
