@@ -611,6 +611,7 @@ class GameMap():
         dirStr+='):'
         direction = speech_input(dirStr)
         if direction == 'potion':
+            rb_container.add_drink_commands()
             turnInc = 0
             if self.knight.potion == 0:
                 say("You don't have any potions")
