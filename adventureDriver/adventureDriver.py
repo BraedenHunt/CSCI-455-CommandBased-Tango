@@ -5,8 +5,9 @@ from queue import Queue
 
 from DriveCommand import DriveCommand
 from RobotContainer import RobotContainer
+from SayPhraseCommand import SayPhraseCommand
 
-rb_container = None
+rb_container: RobotContainer = None
 startDesc = "You awake in an empty dungeon cell... how will you escape?\nBeware, as you only have limited time to make it out!"
 
 startRoomDesc = "An empty cell, you started here."
@@ -206,9 +207,9 @@ class Knight():
             mult = 3
         dmg = mult * random.randint(0,8)
         if dmg==0:
-            print("Oh no, you missed!")
+            say("Oh no, you missed!")
         else:
-            print("You hit the " + target + " for " + str(dmg) + " damage!")
+            say("You hit the " + target + " for " + str(dmg) + " damage!")
         return dmg
 
 
@@ -223,10 +224,10 @@ class Finish():
         return 'Finish'
     def act(self,knight):
         if knight.key:
-            print("Luckily, you have the key!")
+            say("Luckily, you have the key!")
             return True
         else:
-            print("Looks like you need a key.")
+            say("Looks like you need a key.")
             return False
 
 class Other():
@@ -244,21 +245,21 @@ class Other():
                 return
             else:
                 if self.type == 1:
-                    print("You find a magical blade, glowing with power! It will help you fight monsters.")
+                    say("You find a magical blade, glowing with power! It will help you fight monsters.")
                     knight.sword = True
                 elif self.type > 1 and self.type < 5:
-                    print("You find a bottle filled with a swirling liquid, a potion! When not fighting, type 'potion' to use.\n But beware, who knows what it does!")
+                    say("You find a bottle filled with a swirling liquid, a potion! When not fighting, type 'potion' to use.\n But beware, who knows what it does!")
                     knight.potion+=1
                 else:
                     dmg = random.randint(5,15)
-                    print("You spring a hidden trap! The swinging blade hits you for " + str(dmg) + " damage!")
+                    say("You spring a hidden trap! The swinging blade hits you for " + str(dmg) + " damage!")
                     knight.hp -= dmg
                     if knight.hp <= 0:
-                        print(trapLoseText)
+                        say(trapLoseText)
                         playAgain()
                 self.used = True           
         else:
-            print("There is nothing else to find here.")
+            say("There is nothing else to find here.")
 
 class Recharge():
     def __repr__(cls):
@@ -270,14 +271,14 @@ class Recharge():
     def act(self,knight):
         if(not self.used):
             if knight.hp == 100:
-                print("Magic runes carved here could refill your health, if you were hurt.")
+                say("Magic runes carved here could refill your health, if you were hurt.")
                 return
             else:
                 knight.hp = 100
-                print("The magic runes carved here refill your health")
+                say("The magic runes carved here refill your health")
                 self.used = True
         else:
-            print("The magic runes here have been used.")
+            say("The magic runes here have been used.")
 
 class Key():
     def __repr__(cls):
@@ -289,11 +290,11 @@ class Key():
     
     def act(self,knight):
         if(not self.used):
-            print("A golden chest sits in the center of this room, carved with a square and a triangle.")
+            say("A golden chest sits in the center of this room, carved with a square and a triangle.")
             if self.solution:
-                print("A riddle reads: The number of musketeers is the key.")
+                say("A riddle reads: The number of musketeers is the key.")
             else:
-                print("A riddle reads: The turning of the seasons reveals the key")
+                say("A riddle reads: The turning of the seasons reveals the key")
 
             choice = speech_input("What do you choose? [square, triangle, leave]: ")
 
@@ -304,23 +305,23 @@ class Key():
             elif choice == 'leave':
                 return
             else:
-                print("That is not a valid choice, come back later")
+                say("That is not a valid choice, come back later")
                 return
 
             if numChoice == self.solution:
-                print("At the press of the button, the chest opens, revealing a key!")
+                say("At the press of the button, the chest opens, revealing a key!")
                 knight.key = True
             else:
                     dmg = random.randint(15,50)
-                    print("The wrong choice! A poison needle jabs you for " + str(dmg) + " damage!\nPressing the other button, you find a key.")
+                    say("The wrong choice! A poison needle jabs you for " + str(dmg) + " damage!\nPressing the other button, you find a key.")
                     knight.key = True
                     knight.hp -= dmg
                     if knight.hp <= 0:
-                        print(trapLoseText)
+                        say(trapLoseText)
                         playAgain()
             self.used = True           
         else:
-            print("There is nothing else to find here.")
+            say("There is nothing else to find here.")
 
 class Hint():
     def __repr__(cls):
@@ -347,7 +348,7 @@ class Hint():
         elif (curRoomCoord[0] > endRoomCoord[0]) and (curRoomCoord[1] > endRoomCoord[1]):
             hint = "northwest"
         
-        print("A cryptic message points the way: the exit is " + hint + " of here.")
+        say("A cryptic message points the way: the exit is " + hint + " of here.")
 
     def getCoord(self,num):
         if num == 1:
@@ -452,7 +453,7 @@ class Encounter():
             return "The remains of enemies are here."
 
     def act(self,knight):
-        print(self.showEnemies())
+        say(self.showEnemies())
         while(self.alive):     
             command = speech_input("Enemies! 'fight' or 'run'? (You have " + str(knight.hp) + " health left.):")
             if command == "fight":
@@ -460,25 +461,25 @@ class Encounter():
                 for enemy in self.enemies:
                     knight.hp -= enemy.attack()
                     if knight.hp <= 0:
-                        print(monsterLoseText)
+                        say(monsterLoseText)
                         playAgain()
                 dmg = knight.attack(self.enemies[0].name)
                 self.enemies[0].hp -= dmg
                 if self.enemies[0].hp <= 0:
-                    print("You killed the " + self.enemies[0].name + "!")
+                    say("You killed the " + self.enemies[0].name + "!")
                     self.enemies.pop(0)
                 if not self.enemies:
-                    print("You defeated the enemies! You have " + str(knight.hp) + " health left.")
+                    say("You defeated the enemies! You have " + str(knight.hp) + " health left.")
                     self.alive = False
                     return True
                 else:
                     for enemy in self.enemies:
-                        print("The " + enemy.name + " has " + str(enemy.hp) + " health left.")
+                        say("The " + enemy.name + " has " + str(enemy.hp) + " health left.")
             elif command == 'run':
-                print("You flee, running blindly.")
+                say("You flee, running blindly.")
                 return False
             else:
-                print("That is not a possible action, try again.")
+                say("That is not a possible action, try again.")
 
         return True
             
@@ -505,9 +506,9 @@ class Monster():
     def attack(self):
         dmg = self.dmg[random.randint(0,len(self.dmg)-1)]
         if dmg==0:
-            print("The " + self.name + " misses!")
+            say("The " + self.name + " misses!")
         else:
-            print("The " + self.name + " hits for " + str(dmg) + " damage!")
+            say("The " + self.name + " hits for " + str(dmg) + " damage!")
         return dmg
     
 
@@ -612,29 +613,29 @@ class GameMap():
         if direction == 'potion':
             turnInc = 0
             if self.knight.potion == 0:
-                print("You don't have any potions")
+                say("You don't have any potions")
             else:
                 effect = random.randint(1,6)
                 if effect == 1:
                     dmg = random.randint(1,10)
-                    print("The potion is actually poison! It deals " + str(dmg) + " damage.")
+                    say("The potion is actually poison! It deals " + str(dmg) + " damage.")
                     self.knight.hp -= dmg
-                    print("You have " + self.knight.hp + " health left.")
+                    say("You have " + self.knight.hp + " health left.")
                     if self.knight.hp <= 0:
-                        print("The poison causes you to collapse. YOU LOSE")
+                        say("The poison causes you to collapse. YOU LOSE")
                         playAgain()
                 else:
-                    print("The potion restores your health to full!")
+                    say("The potion restores your health to full!")
                     self.knight.hp = 100
                 self.knight.potion -= 1
         elif self.check_key_exist(self.adventureMap[self.curRoom-1],direction):
-            #print("Going to room: " + str(adventureMap[self.curRoom-1][direction]))
+            #say("Going to room: " + str(adventureMap[self.curRoom-1][direction]))
             self.curRoom = adventureMap[self.curRoom-1][direction]
             self.turnAndMove(direction)
             self.facing_dir = direction
 
             print("")
-            print(self.roomContents[self.curRoom-1].desc)
+            say(self.roomContents[self.curRoom-1].desc)
             if str(self.roomContents[self.curRoom-1].content) == "Hint":
                self.roomContents[self.curRoom-1].content.act(self.knight, self.curRoom, self.endRoom)
             elif str(self.roomContents[self.curRoom-1].content) == "Encounter":
@@ -643,14 +644,14 @@ class GameMap():
                     pass
                 else:
                     self.curRoom = random.randint(1,25)
-                    print(self.roomContents[self.curRoom-1].desc)
+                    say(self.roomContents[self.curRoom-1].desc)
                     self.queue.put(DriveCommand(self.robot_container.drivetrain, 4*self.turn_time, self.speed, -self.speed))
             elif str(self.roomContents[self.curRoom-1].content) == "Finish":
                return (self.roomContents[self.curRoom-1].content.act(self.knight), turnInc)
             else:
                 self.roomContents[self.curRoom-1].content.act(self.knight)
         else:
-            print("Can't Go that way")
+            say("Can't Go that way")
             turnInc = 0
 
         return (False, turnInc)
@@ -691,19 +692,19 @@ class GameMap():
         return removedRooms
 
     def start(self):
-        print(startDesc)
+        say(startDesc)
 
     def populateMap(self,easy):
         rooms = [i+1 for i in range(25)]
-        #print(rooms)
+        #say(rooms)
 
         #create start on an edge
         possibleStartPos = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
         self.curRoom = possibleStartPos[random.randint(0,len(possibleStartPos)-1)]
         self.roomContents[self.curRoom-1] = Node(self.curRoom, Start(), startRoomDesc)
         rooms.remove(self.curRoom)
-        if easy: print("Start placed at "+str(self.curRoom))
-        #print(rooms)
+        if easy: say("Start placed at "+str(self.curRoom))
+        #say(rooms)
 
         #create end on opposite edge
         if self.curRoom == 1:
@@ -727,8 +728,8 @@ class GameMap():
         self.endRoom = possibleFinishPos[random.randint(0,len(possibleFinishPos)-1)]
         self.roomContents[self.endRoom-1] = Node(self.endRoom, Finish(), endRoomDesc)
         rooms.remove(self.endRoom)
-        if easy: print("End placed at "+str(self.endRoom))
-        #print(rooms)
+        if easy: say("End placed at "+str(self.endRoom))
+        #say(rooms)
 
         #place 3 Recharge Nodes (can't be next to each other)
         adjacentRooms = []
@@ -737,9 +738,9 @@ class GameMap():
             self.roomContents[room-1] = Node(room, Recharge())
             rooms.remove(room)
             adjacentRooms.extend(self.removeAdjacentRooms(room,rooms))
-            if easy: print("Recharge placed at " + str(room))
+            if easy: say("Recharge placed at " + str(room))
         rooms.extend(adjacentRooms)
-        #print(rooms)
+        #say(rooms)
        
         #place 2 Hint Nodes
         adjacentRooms = []
@@ -748,17 +749,17 @@ class GameMap():
             self.roomContents[room-1] = Node(room, Hint())
             rooms.remove(room)
             adjacentRooms.extend(self.removeAdjacentRooms(room,rooms))
-            if easy: print("Hint placed at " + str(room))
+            if easy: say("Hint placed at " + str(room))
         rooms.extend(adjacentRooms)
-        #print(rooms)
+        #say(rooms)
 
 
         #place puzzle Node
         room = rooms[random.randint(0,len(rooms)-1)]
         self.roomContents[room-1] = Node(room, Key())
         rooms.remove(room)
-        if easy: print("Key puzzle placed at " + str(room))
-        #print(rooms)
+        if easy: say("Key puzzle placed at " + str(room))
+        #say(rooms)
 
 
         #place 3 ~Other~ Nodes
@@ -766,34 +767,34 @@ class GameMap():
             room = rooms[random.randint(0,len(rooms)-1)]
             self.roomContents[room-1] = Node(room, Other())
             rooms.remove(room)
-            if easy: print("~Other~ room placed at " + str(room))
-        #print(rooms)
+            if easy: say("~Other~ room placed at " + str(room))
+        #say(rooms)
         
         #place 6 easy battles
         for i in range(6):
             room = rooms[random.randint(0,len(rooms)-1)]
             self.roomContents[room-1] = Node(room, Encounter("easy"))
             rooms.remove(room)
-            if easy: print("Easy Encounter placed at " + str(room))
-        #print(rooms)
+            if easy: say("Easy Encounter placed at " + str(room))
+        #say(rooms)
 
         #place 5 medium battles
         for i in range(5):
             room = rooms[random.randint(0,len(rooms)-1)]
             self.roomContents[room-1] = Node(room, Encounter("medium"))
             rooms.remove(room)
-            if easy: print("Medium Encounter placed at " + str(room))
-        #print(rooms)
+            if easy: say("Medium Encounter placed at " + str(room))
+        #say(rooms)
 
         #place 3 hard battles
         for i in range(3):
             room = rooms[random.randint(0,len(rooms)-1)]
             self.roomContents[room-1] = Node(room, Encounter("hard"))
             rooms.remove(room)
-            if easy: print("Hard Encounter placed at " + str(room))
-        #print(rooms)
+            if easy: say("Hard Encounter placed at " + str(room))
+        #say(rooms)
 
-        if easy: print("All rooms placed")
+        if easy: say("All rooms placed")
 
 
 class Game():
@@ -813,12 +814,12 @@ class Game():
         while(not self.win):
             (self.win,inc) = self.map.getDir()
             self.turnCount += inc
-            print(f"Turns remaining: {30 - self.turnCount}")
+            say(f"Turns remaining: {30 - self.turnCount}")
             if self.turnCount > 30:
-                print(timeLoseText)
+                say(timeLoseText)
                 playAgain()
                 exit
-        print(winText)
+        say(winText)
         playAgain()
         return
 
@@ -835,17 +836,22 @@ def playAgain():
     elif pa == 'n':
         exit
     else:
-        print("Not a valid command, quitting")
+        say("Not a valid command, quitting")
         exit
     exit
 
 
 def speech_input(output_string):
-    print(output_string)
+    say(output_string)
     rb_container.speech_listener.clear_history()
     while(rb_container.speech_listener.phrases_heard.empty()):
         pass
     return rb_container.speech_listener.phrases_heard.get()
+
+def say(output_string):
+    print(output_string)
+    if rb_container.speaker is not None:
+        rb_container.command_queue.put(SayPhraseCommand(rb_container.speaker, output_string))
 
 ###############################################################################################
 # Main Method

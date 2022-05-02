@@ -31,7 +31,7 @@ def main():
 
 
 def run_game_driver(queue: Queue, robot_container):
-    g = Game(queue, robot_container,easy=False)
+    g = Game(queue, robot_container, easy=False)
     g.play()
 
 
