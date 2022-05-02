@@ -38,3 +38,18 @@ class RobotContainer:
         self.command_queue.put(ServoCommand(self.bicep_flex, 0, delayed_end=inner_delay))
         self.command_queue.put(ServoCommand(self.shoulder_y, 0, delayed_end=inner_delay))
         self.command_queue.put(ServoCommand(self.wrist_flex, 0, delayed_end=inner_delay))
+
+    def add_drink_commands(self):
+        inner_delay = .05
+        between_delay = .5
+        self.command_queue.put(ServoCommand(self.shoulder_x, 0, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.bicep_flex, 0, delayed_end=between_delay))
+        self.command_queue.put(ServoCommand(self.head_tilt, 1, delayed_end=between_delay))
+
+        self.command_queue.put(ServoCommand(self.head_tilt, -1, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.bicep_flex, 1, delayed_end=inner_delay))
+
+        self.command_queue.put(ServoCommand(self.head_tilt, 0, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.bicep_flex, 0, delayed_end=inner_delay))
+
+

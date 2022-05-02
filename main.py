@@ -21,13 +21,13 @@ def main():
     queue = robot_container.command_queue
 
     #add_slash_commands(queue, robot_container)
-
+    robot_container.add_drink_commands()
 
     command_thread = threading.Thread(target=run_commands, args=[queue])
     command_thread.start()
 
-    game_driver_thread = threading.Thread(target=run_game_driver, args=[queue, robot_container])
-    game_driver_thread.start()
+    #game_driver_thread = threading.Thread(target=run_game_driver, args=[queue, robot_container])
+    #game_driver_thread.start()
 
 
 def run_game_driver(queue: Queue, robot_container):

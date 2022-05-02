@@ -522,7 +522,7 @@ class GameMap():
         self.populateMap(easy)
         self.facing_dir = "north"
         self.turn_time = 1
-        self.drive_time = 1
+        self.drive_time = .5
         self.queue = queue
         self.robot_container = robot_container
         self.speed = .7
@@ -645,7 +645,7 @@ class GameMap():
                 else:
                     self.curRoom = random.randint(1,25)
                     say(self.roomContents[self.curRoom-1].desc)
-                    self.queue.put(DriveCommand(self.robot_container.drivetrain, 4*self.turn_time, self.speed, -self.speed))
+                    self.queue.put(DriveCommand(self.robot_container.drivetrain, 3*self.turn_time, self.speed, -self.speed))
             elif str(self.roomContents[self.curRoom-1].content) == "Finish":
                return (self.roomContents[self.curRoom-1].content.act(self.knight), turnInc)
             else:
