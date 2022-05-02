@@ -1,4 +1,4 @@
-import TTSEngine
+from TTSEngine import TTSEngine
 
 def main():
     tts = TTSEngine()
