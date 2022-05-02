@@ -30,4 +30,4 @@ class SayPhraseCommand(Command):
         self.finished = True
 
     def is_finished(self):
-        return self.finished
+        return self.finished or self.elaspsed_time > 10
