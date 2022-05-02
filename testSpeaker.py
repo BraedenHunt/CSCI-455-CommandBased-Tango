@@ -7,3 +7,5 @@ def main():
 
     tts.speak("hi")
 
+if __name__ == "__main__":
+    main()
