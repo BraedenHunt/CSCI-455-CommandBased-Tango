@@ -16,9 +16,6 @@ class TTSEngine:
         self.engine.connect("finished-utterance", callback)
         self.speaking_thread.setDaemon(True)
         self.speaking_thread.start()
-        self.engine.connect("finished-utterance", callback)
-        self.speak(phrase)
-        callback("", True)
 
     def speak(self, phrase):
         self.engine.say(phrase)
