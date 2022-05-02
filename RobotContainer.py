@@ -55,5 +55,6 @@ class RobotContainer:
         self.command_queue.put(ServoCommand(self.head_tilt, 0, delayed_end=inner_delay))
         self.command_queue.put(ServoCommand(self.bicep_flex, 0, delayed_end=inner_delay))
         self.command_queue.put(ServoCommand(self.shoulder_y, -.5, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.shoulder_x, 1, delayed_end=inner_delay))
 
 
