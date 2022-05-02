@@ -1,9 +1,12 @@
 from Drivetrain import Drivetrain
+from ServoCommand import ServoCommand
 from TTSEngine import TTSEngine
 from USBController import USBController
 from PWMController import PWMController
 from queue import Queue
 from SpeechRecognition import SpeechListener
+
+
 
 class RobotContainer:
 
@@ -22,3 +25,16 @@ class RobotContainer:
         self.command_queue = Queue()
         self.speech_listener = SpeechListener()
         self.speaker = TTSEngine()
+
+    def add_slash_commands(self):
+        inner_delay = .05
+        between_delay = 1
+        self.command_queue.put(ServoCommand(self.shoulder_x, 1, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.bicep_flex, 1, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.shoulder_y, -1, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.wrist_flex, 0, delayed_end=between_delay))
+
+        self.command_queue.put(ServoCommand(self.shoulder_x, 0, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.bicep_flex, 0, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.shoulder_y, 0, delayed_end=inner_delay))
+        self.command_queue.put(ServoCommand(self.wrist_flex, 0, delayed_end=inner_delay))

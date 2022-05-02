@@ -456,6 +456,7 @@ class Encounter():
         while(self.alive):     
             command = speech_input("Enemies! 'fight' or 'run'? (You have " + str(knight.hp) + " health left.):")
             if command == "fight":
+                rb_container.add_slash_commands()
                 for enemy in self.enemies:
                     knight.hp -= enemy.attack()
                     if knight.hp <= 0:
