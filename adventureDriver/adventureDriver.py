@@ -849,6 +849,7 @@ def speech_input(output_string):
     rb_container.command_queue.put(command)
     while not command.is_finished():
         pass
+    print("speech returned: " + command.phrase)
     return command.phrase
 
 def say(output_string):
