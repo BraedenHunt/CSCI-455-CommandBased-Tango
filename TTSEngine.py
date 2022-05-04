@@ -19,4 +19,4 @@ class TTSEngine:
     def speak(self, phrase):
         self.engine.say(phrase)
         self.engine.runAndWait()
-        print("finished speaking")
+        #print("finished speaking")

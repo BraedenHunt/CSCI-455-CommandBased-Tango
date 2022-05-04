@@ -863,7 +863,7 @@ def speech_input(output_string):
     rb_container.command_queue.put(command)
     while command.phrase is None:
         pass
-    print("speech returned: " + command.phrase)
+    #print("speech returned: " + command.phrase)
     return command.phrase
 
 def say(output_string):
