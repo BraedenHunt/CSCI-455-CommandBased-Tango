@@ -457,7 +457,7 @@ class Encounter():
         say(self.showEnemies())
         while(self.alive):     
             command = speech_input("Enemies! 'fight' or 'run'? (You have " + str(knight.hp) + " health left.):")
-            if command == "fight":
+            if "fight" in command:
                 rb_container.add_slash_commands()
                 for enemy in self.enemies:
                     knight.hp -= enemy.attack()
@@ -476,7 +476,7 @@ class Encounter():
                 else:
                     for enemy in self.enemies:
                         say("The " + enemy.name + " has " + str(enemy.hp) + " health left.")
-            elif command == 'run':
+            elif "run" in command:
                 say("You flee, running blindly.")
                 return False
             else:
@@ -646,8 +646,8 @@ class GameMap():
                     pass
                 else:
                     self.curRoom = random.randint(1,25)
-                    say(self.roomContents[self.curRoom-1].desc)
                     self.queue.put(DriveCommand(self.robot_container.drivetrain, 3*self.turn_time, self.speed, -self.speed))
+                    say(self.roomContents[self.curRoom-1].desc)
             elif str(self.roomContents[self.curRoom-1].content) == "Finish":
                return (self.roomContents[self.curRoom-1].content.act(self.knight), turnInc)
             else:
