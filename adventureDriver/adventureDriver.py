@@ -847,6 +847,8 @@ def speech_input(output_string):
     say(output_string)
     command = ListenCommand(rb_container.speech_listener)
     rb_container.command_queue.put(command)
+    while not command.is_finished():
+        pass
     return command.phrase
 
 def say(output_string):
