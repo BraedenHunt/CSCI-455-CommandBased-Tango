@@ -35,13 +35,37 @@ class Window(Frame):
             anim = root.after(50,lambda :animation(count))
         
         gif_label = Label(self,image="")
-        gif_label.place(x=300, y=75)
+        gif_label.place(x=600, y=0)
         gif_label.configure(bg='black', fg='white')
 
         animation(count)
         resized_gif = gif.resize((800, 480), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(resized_gif)
+    
+    def loadBlade(self, fileName):
+        gif = Image.open(fileName)
+        frames = gif.n_frames
+        im = [PhotoImage(file=fileName,format=f"gif -index {i}") for i in range(frames)]
+        count = 0
+        anim = None
+
+        def animation(count):
+            global anim
+            im2 = im[count]
+
+            gif_label.configure(image=im2)
+            count += 1
+            if count == frames:
+                count = 0
+            anim = root.after(50,lambda :animation(count))
         
+        gif_label = Label(self,image="")
+        gif_label.place(x=500, y=0)
+        gif_label.configure(bg='black', fg='white')
+
+        animation(count)
+        resized_gif = gif.resize((800, 480), Image.ANTIALIAS)
+        render = ImageTk.PhotoImage(resized_gif)
 
     def loadImage(self, fileName):
         img = Image.open(fileName)
@@ -81,9 +105,10 @@ class Window(Frame):
         
     def loadKey(self, fileName):
         img = Image.open(fileName)
-        resized_img = img.resize((75, 50), Image.ANTIALIAS)
+        resized_img = img.resize((75, 75), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(resized_img)
         img = Label(self, image=render, borderwidth = 0)
+        img.configure(bg='black')
         img.image = render
         img.place(x=700, y=0)
     
@@ -91,11 +116,12 @@ root = Tk()
 app = Window(root)
 root.wm_title("Background")
 root.geometry("800x480")
-app.loadImage("dungeon_three.jpeg")
-app.drinkPotion("potion5.gif")
-app.loadEnemy("orc.gif", 1)
-app.loadEnemy("slime.gif", 2)
-app.loadEnemy("demon.gif", 3)
-app.loadKey("key.png")
-app.healthBar(10)
+app.loadImage("guiPics/dungeon_three.jpeg")
+app.drinkPotion("guiPics/potion5.gif")
+app.loadBlade("guiPics/blade3.gif")
+app.loadEnemy("guiPics/orc.gif", 1)
+app.loadEnemy("guiPics/slime.gif", 2)
+app.loadEnemy("guiPics/demon.gif", 3)
+app.loadKey("guiPics/key.jpeg")
+app.healthBar(100)
 root.mainloop()
