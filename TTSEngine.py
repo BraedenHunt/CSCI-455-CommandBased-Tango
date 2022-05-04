@@ -12,11 +12,11 @@ class TTSEngine:
         self.engine.setProperty('voice', voices[self.voice_num].id)
 
     def say_phrase(self, phrase, callback: callable):
-        self.speaking_thread = threading.Thread(target=self.speak, args=[phrase])
+        #self.speaking_thread = threading.Thread(target=self.speak, args=[phrase])
         self.engine.connect("finished-utterance", callback)
-        self.speaking_thread.start()
+        self.speak(phrase)
 
     def speak(self, phrase):
         self.engine.say(phrase)
         self.engine.runAndWait()
-        print("finished speaking")
+        #print("finished speaking")

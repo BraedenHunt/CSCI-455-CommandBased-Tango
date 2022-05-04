@@ -26,7 +26,7 @@ class SayPhraseCommand(Command):
         self.elaspsed_time = time-self.start_time
 
     def finish(self, name:str, completed: bool):
-        print("finish called")
+        #print("finish called")
         self.finished = True
 
     def is_finished(self):

@@ -218,6 +218,7 @@ class Start():
     def __repr__(cls):
         return 'Start'
     def act(self,knight):
+        #TODO initialize start room
         return
     
 class Finish():
@@ -248,13 +249,17 @@ class Other():
                 if self.type == 1:
                     say("You find a magical blade, glowing with power! It will help you fight monsters.")
                     knight.sword = True
+                    #TODO add sword
                 elif self.type > 1 and self.type < 5:
                     say("You find a bottle filled with a swirling liquid, a potion! When not fighting, type 'potion' to use.\n But beware, who knows what it does!")
                     knight.potion+=1
+                    #TODO add potion
+
                 else:
                     dmg = random.randint(5,15)
                     say("You spring a hidden trap! The swinging blade hits you for " + str(dmg) + " damage!")
                     knight.hp -= dmg
+                    # TODO trapped room
                     if knight.hp <= 0:
                         say(trapLoseText)
                         playAgain()
@@ -276,6 +281,7 @@ class Recharge():
                 return
             else:
                 knight.hp = 100
+                # TODO Update health
                 say("The magic runes carved here refill your health")
                 self.used = True
         else:
@@ -312,6 +318,7 @@ class Key():
             if numChoice == self.solution:
                 say("At the press of the button, the chest opens, revealing a key!")
                 knight.key = True
+                #TODO add key
             else:
                     dmg = random.randint(15,50)
                     say("The wrong choice! A poison needle jabs you for " + str(dmg) + " damage!\nPressing the other button, you find a key.")
@@ -441,7 +448,7 @@ class Encounter():
                     self.enemies.append(Monster("orc"))
             self.enemies.append(Monster("demon"))
 
-    def showEnemies(self):
+    def showEnemies(self): #TODO destroy all enemies and read
         if(self.alive):
             stringEncounter = ""
             for enemy in self.enemies:
@@ -453,11 +460,11 @@ class Encounter():
         else:
             return "The remains of enemies are here."
 
-    def act(self,knight):
+    def act(self,knight): #TODO update health
         say(self.showEnemies())
         while(self.alive):     
             command = speech_input("Enemies! 'fight' or 'run'? (You have " + str(knight.hp) + " health left.):")
-            if command == "fight":
+            if "fight" in command:
                 rb_container.add_slash_commands()
                 for enemy in self.enemies:
                     knight.hp -= enemy.attack()
@@ -476,7 +483,7 @@ class Encounter():
                 else:
                     for enemy in self.enemies:
                         say("The " + enemy.name + " has " + str(enemy.hp) + " health left.")
-            elif command == 'run':
+            elif "run" in command:
                 say("You flee, running blindly.")
                 return False
             else:
@@ -617,12 +624,13 @@ class GameMap():
             if self.knight.potion == 0:
                 say("You don't have any potions")
             else:
+
                 effect = random.randint(1,6)
                 if effect == 1:
                     dmg = random.randint(1,10)
                     say("The potion is actually poison! It deals " + str(dmg) + " damage.")
                     self.knight.hp -= dmg
-                    say("You have " + self.knight.hp + " health left.")
+                    say("You have " + str(self.knight.hp) + " health left.")
                     if self.knight.hp <= 0:
                         say("The poison causes you to collapse. YOU LOSE")
                         playAgain()
@@ -630,9 +638,12 @@ class GameMap():
                     say("The potion restores your health to full!")
                     self.knight.hp = 100
                 self.knight.potion -= 1
+                # if potion == 0: TODO
+                # destroy potion image
         elif self.check_key_exist(self.adventureMap[self.curRoom-1],direction):
             #say("Going to room: " + str(adventureMap[self.curRoom-1][direction]))
             self.curRoom = adventureMap[self.curRoom-1][direction]
+            # TODO change room background
             self.turnAndMove(direction)
             self.facing_dir = direction
 
@@ -642,12 +653,15 @@ class GameMap():
                self.roomContents[self.curRoom-1].content.act(self.knight, self.curRoom, self.endRoom)
             elif str(self.roomContents[self.curRoom-1].content) == "Encounter":
                 success = self.roomContents[self.curRoom-1].content.act(self.knight)
-                if success:
+
+                if success: # killed all monsters
+                    #TODO monsters dead
                     pass
-                else:
+                else: # runs away
                     self.curRoom = random.randint(1,25)
-                    say(self.roomContents[self.curRoom-1].desc)
+                    # TODO update room
                     self.queue.put(DriveCommand(self.robot_container.drivetrain, 3*self.turn_time, self.speed, -self.speed))
+                    say(self.roomContents[self.curRoom-1].desc)
             elif str(self.roomContents[self.curRoom-1].content) == "Finish":
                return (self.roomContents[self.curRoom-1].content.act(self.knight), turnInc)
             else:
@@ -845,8 +859,12 @@ def playAgain():
 
 def speech_input(output_string):
     say(output_string)
-    rb_container.command_queue.put(ListenCommand(rb_container.speech_listener))
-    return rb_container.speech_listener.phrases_heard.get()
+    command = ListenCommand(rb_container.speech_listener)
+    rb_container.command_queue.put(command)
+    while command.phrase is None:
+        pass
+    #print("speech returned: " + command.phrase)
+    return command.phrase
 
 def say(output_string):
     print(output_string)
