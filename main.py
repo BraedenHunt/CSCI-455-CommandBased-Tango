@@ -6,10 +6,12 @@ import threading
 import time
 
 from Animation import Animation
+from ListenCommand import ListenCommand
 from RobotContainer import RobotContainer
 from DriveCommand import  DriveCommand
 from queue import Queue
 
+from SayPhraseCommand import SayPhraseCommand
 from ServoCommand import ServoCommand
 from adventureDriver.adventureDriver import Game
 from robotGUI import RobotGUI
@@ -26,8 +28,15 @@ def main():
     command_thread = threading.Thread(target=run_commands, args=[queue])
     command_thread.start()
 
-    game_driver_thread = threading.Thread(target=run_game_driver, args=[queue, robot_container])
-    game_driver_thread.start()
+    queue.put(SayPhraseCommand(robot_container.speaker, "Hello World"))
+    queue.put(ListenCommand(robot_container.speech_listener))
+    while robot_container.speech_listener.phrases_heard.empty():
+        pass
+    queue.put(SayPhraseCommand(robot_container.speaker, robot_container.speech_listener.phrases_heard.get()))
+
+
+    #game_driver_thread = threading.Thread(target=run_game_driver, args=[queue, robot_container])
+    #game_driver_thread.start()
 
 
 def run_game_driver(queue: Queue, robot_container):
