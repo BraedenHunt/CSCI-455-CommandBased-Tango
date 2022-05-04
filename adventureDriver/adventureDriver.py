@@ -630,7 +630,7 @@ class GameMap():
                     dmg = random.randint(1,10)
                     say("The potion is actually poison! It deals " + str(dmg) + " damage.")
                     self.knight.hp -= dmg
-                    say("You have " + self.knight.hp + " health left.")
+                    say("You have " + str(self.knight.hp) + " health left.")
                     if self.knight.hp <= 0:
                         say("The poison causes you to collapse. YOU LOSE")
                         playAgain()
