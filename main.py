@@ -29,10 +29,11 @@ def main():
     command_thread.start()
 
     queue.put(SayPhraseCommand(robot_container.speaker, "Hello World"))
-    queue.put(ListenCommand(robot_container.speech_listener))
+    listen_command = ListenCommand(robot_container.speech_listener)
+    queue.put(listen_command)
     while robot_container.speech_listener.phrases_heard.empty():
         pass
-    queue.put(SayPhraseCommand(robot_container.speaker, robot_container.speech_listener.phrases_heard.get()))
+    queue.put(SayPhraseCommand(robot_container.speaker, listen_command.phrase))
 
 
     #game_driver_thread = threading.Thread(target=run_game_driver, args=[queue, robot_container])

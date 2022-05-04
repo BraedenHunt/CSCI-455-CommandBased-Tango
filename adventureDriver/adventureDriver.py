@@ -845,8 +845,9 @@ def playAgain():
 
 def speech_input(output_string):
     say(output_string)
-    rb_container.command_queue.put(ListenCommand(rb_container.speech_listener))
-    return rb_container.speech_listener.phrases_heard.get()
+    command = ListenCommand(rb_container.speech_listener)
+    rb_container.command_queue.put(command)
+    return command.phrase
 
 def say(output_string):
     print(output_string)
