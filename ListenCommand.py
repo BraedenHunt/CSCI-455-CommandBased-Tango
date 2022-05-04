@@ -13,6 +13,7 @@ class ListenCommand(Command):
 
     def end(self, interrupted):
         self.phrase = self.speech.phrases_heard.get()
+        print("Heard Phrase: " + self.phrase)
 
     def is_finished(self):
         return not self.speech.phrases_heard.empty()
