@@ -52,7 +52,7 @@ class Window(Frame):
                 count += 1
                 if count == frames:
                     count = 0
-                anim = root.after(50, lambda: animation(count))
+                anim = self.master.after(100, lambda: animation(count))
             except:
                 pass
         
@@ -79,7 +79,7 @@ class Window(Frame):
                 count += 1
                 if count == frames:
                     count = 0
-                anim = root.after(50, lambda: animation(count))
+                anim = self.master.after(50, lambda: animation(count))
             except:
                 pass
         
@@ -116,10 +116,10 @@ class Window(Frame):
                 count += 1
                 if count == frames:
                     count = 0
-                anim = root.after(50,lambda :animation(count))
-            except:
-                pass
-        
+                anim = self.master.after(50,lambda :animation(count))
+            except Exception as e:
+                print("Exception in enemy animation: " + str(e))
+
         label = Label(self, text=str(health))
         label.pack(side=RIGHT, anchor=SE)
         label.configure(bg='black', fg='white')

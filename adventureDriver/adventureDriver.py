@@ -540,7 +540,7 @@ class Monster():
 
 class GameMap():
 
-    ROOM_CONTENT_MAPPING = {"Hint": 'guiPics/runes.jpeg', "Encounter": 'guiPics/dungeon_one.jpeg', "Finish": 'guiPics/throne_room.jpeg', "Start": "guiPics/dungeon_three.jpeg", "Other":"guiPics/chest.jpeg", "Recharge": 'guiPics/runes.jpeg'}
+    ROOM_CONTENT_MAPPING = {"Hint": 'guiPics/runes.jpeg', "Encounter": 'guiPics/dungeon_one.jpeg', "Finish": 'guiPics/throne_room.jpeg', "Start": "guiPics/dungeon_three.jpeg", "Other":"guiPics/chest.jpeg","Key":"guiPics/cell.jpeg", "Recharge": 'guiPics/runes.jpeg'}
 
     def __init__(self, adventureMap,knight,easy, queue:Queue, robot_container: RobotContainer):
         self.knight = knight
