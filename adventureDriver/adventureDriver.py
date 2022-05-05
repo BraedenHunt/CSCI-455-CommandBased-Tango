@@ -560,9 +560,9 @@ class GameMap():
         if dir == "back":
             self.queue.put(DriveCommand(self.robot_container.drivetrain, 2*self.turn_time, -self.speed, self.speed))
         elif dir == "left":
-            self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
-        elif dir == "right":
             self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
+        elif dir == "right":
+            self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
 
         self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
 
