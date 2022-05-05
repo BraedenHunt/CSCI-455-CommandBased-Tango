@@ -9,24 +9,32 @@ class Window(Frame):
         self.master = master
         self.pack(fill=BOTH, expand=1)
         self.enemies = []
+        self.background_image = None
+        self.healthBar_canvas = None
 
     def harm_enemy(self, index, dmg):
         if not self.enemies[index].deal_damage(dmg):
             self.enemies[index].destroy()
             del self.enemies[index]
 
+    def remove_all_enemies(self):
+        for enemy in self.enemies:
+            enemy.destroy()
+        self.enemies = []
+
     def set_enemy_health(self, index, hp):
         self.enemies[index].set_health(hp)
 
     def healthBar(self, health):
-        canvas = Canvas(self, width = 300, height = 70, highlightthickness=0)
-        canvas.configure(bg='black')
+        if self.healthBar_canvas is None:
+            self.healthBar_canvas = Canvas(self, width = 300, height = 70, highlightthickness=0)
+        self.healthBar_canvas.configure(bg='black')
         newHealth = health + 50
-        canvas.create_text(70, 15, text="HEALTH", fill="white", font=('Helvetica 15 bold'))
+        self.healthBar_canvas.create_text(70, 15, text="HEALTH", fill="white", font=('Helvetica 15 bold'))
         # Health bounds 0 & 200
-        canvas.create_rectangle(50, 55, 250, 30, fill = 'white')
-        canvas.create_rectangle(50, 55, newHealth, 30, fill = 'green', outline='')
-        canvas.pack(side = LEFT, padx = 0, pady = 0, anchor = NW)
+        self.healthBar_canvas.create_rectangle(50, 55, 250, 30, fill = 'white')
+        self.healthBar_canvas.create_rectangle(50, 55, newHealth, 30, fill = 'green', outline='')
+        self.healthBar_canvas.pack(side = LEFT, padx = 0, pady = 0, anchor = NW)
         
     def drinkPotion(self, fileName):
         gif = Image.open(fileName)
@@ -86,10 +94,11 @@ class Window(Frame):
         img = Image.open(fileName)
         resized_img = img.resize((800, 480), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(resized_img)
-        img = Label(self, image=render, borderwidth = 0)
-        img.image = render
-        img.place(x=0, y=0)
-        
+        if self.background_image is None:
+            self.background_image = Label(self, image=render, borderwidth = 0)
+        self.background_image.image = render
+        self.background_image.place(x=0, y=0)
+
     def loadEnemy(self, fileName, health):
         gif = Image.open(fileName)
         frames = gif.n_frames

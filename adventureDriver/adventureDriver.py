@@ -200,6 +200,7 @@ class Node():
 class Knight():
     def __init__(self):
         self.hp=100         # hit points
+        app.healthBar(100)
         self.key=False      # do you have the key?
         self.sword=False    # do you have the magic sword
         self.potion=0       # what potion do you have
@@ -220,7 +221,6 @@ class Start():
     def __repr__(cls):
         return 'Start'
     def act(self,knight):
-        #TODO initialize start room
         return
     
 class Finish():
@@ -284,6 +284,7 @@ class Recharge():
             else:
                 knight.hp = 100
                 # TODO Update health
+                app.healthBar(100)
                 say("The magic runes carved here refill your health")
                 self.used = True
         else:
@@ -431,11 +432,9 @@ class Encounter():
             for i in range(slimes):
                 mon = Monster("slime")
                 self.enemies.append(mon)
-                app.loadEnemy("guiPics/slime.gif", mon.hp)
             if orcs == 1:
                 mon = Monster("orc")
                 self.enemies.append(mon)
-                app.loadEnemy("guiPics/orc.gif", mon.hp)
 
         elif diff == 'medium':
             slimes = random.randint(0,2)
@@ -444,11 +443,9 @@ class Encounter():
                 for i in range(slimes):
                     mon = Monster("slime")
                     self.enemies.append(mon)
-                    app.loadEnemy("guiPics/slime.gif", mon.hp)
             for i in range(orcs):
                 mon = Monster("orc")
                 self.enemies.append(mon)
-                app.loadEnemy("guiPics/orc.gif", mon.hp)
         else: #diff = hard
             slimes = random.randint(0,2)
             orcs = random.randint(0,2)
@@ -456,20 +453,19 @@ class Encounter():
                 for i in range(slimes):
                     mon = Monster("slime")
                     self.enemies.append(mon)
-                    app.loadEnemy("guiPics/slime.gif", mon.hp)
             if orcs > 0:
                 for i in range(slimes):
                     mon = Monster("orc")
                     self.enemies.append(mon)
-                    app.loadEnemy("guiPics/orc.gif", mon.hp)
             mon = Monster("demon")
             self.enemies.append(mon)
-            app.loadEnemy("guiPics/demon.gif", mon.hp)
 
     def showEnemies(self): #TODO destroy all enemies and read
         if(self.alive):
+            app.remove_all_enemies()
             stringEncounter = ""
             for i, enemy in enumerate(self.enemies):
+                app.loadEnemy(enemy.image, enemy.hp)
                 if enemy.name == "orc":
                     stringEncounter += ("There is an " + enemy.name + " with " + str(enemy.hp) + " health.\n")
                 else:
@@ -517,6 +513,7 @@ class Monster():
         self.hp = None
         self.dmg = None
         self.typify()
+        self.image = "guiPics/"+self.name+".gif"
 
     def typify(self):
         if self.name=="slime":
@@ -539,6 +536,9 @@ class Monster():
     
 
 class GameMap():
+
+    ROOM_CONTENT_MAPPING = {"Hint": 'guiPics/runes.jpeg', "Encounter": 'guiPics/dungeon_one.jpeg', "Finish": 'guiPics/throne_room.jpeg', "Start": "guiPics/dungeon_three.jpeg"}
+
     def __init__(self, adventureMap,knight,easy, queue:Queue, robot_container: RobotContainer):
         self.knight = knight
         self.adventureMap = adventureMap
@@ -655,13 +655,17 @@ class GameMap():
                 else:
                     say("The potion restores your health to full!")
                     self.knight.hp = 100
+                    app.healthBar(100)
                 self.knight.potion -= 1
                 # if potion == 0: TODO
                 # destroy potion image
         elif self.check_key_exist(self.adventureMap[self.curRoom-1],direction):
             #say("Going to room: " + str(adventureMap[self.curRoom-1][direction]))
             self.curRoom = adventureMap[self.curRoom-1][direction]
-            # TODO change room background
+            #TODO change room background
+            image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
+            app.loadImage(image_file)
+
             self.turnAndMove(direction)
             self.facing_dir = direction
 
@@ -677,7 +681,9 @@ class GameMap():
                     pass
                 else: # runs away
                     self.curRoom = random.randint(1,25)
-                    # TODO update room
+                    #TODO update room
+                    image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
+                    app.loadImage(image_file)
                     self.queue.put(DriveCommand(self.robot_container.drivetrain, 3*self.turn_time, self.speed, -self.speed))
                     say(self.roomContents[self.curRoom-1].desc)
             elif str(self.roomContents[self.curRoom-1].content) == "Finish":
@@ -736,6 +742,9 @@ class GameMap():
         possibleStartPos = [1,2,3,4,5,10,15,20,25,24,23,22,21,16,11,6]
         self.curRoom = possibleStartPos[random.randint(0,len(possibleStartPos)-1)]
         self.roomContents[self.curRoom-1] = Node(self.curRoom, Start(), startRoomDesc)
+        #TODO start room
+        image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
+        app.loadImage(image_file)
         rooms.remove(self.curRoom)
         if easy: say("Start placed at "+str(self.curRoom))
         #say(rooms)
@@ -834,15 +843,17 @@ class GameMap():
 class Game():
     def __init__(self, queue: Queue, robot_container:RobotContainer, easy, application: Window):
         self.turnCount = 0
-        self.you = Knight()
         self.queue = queue
         self.robot_container = robot_container
         global rb_container
         rb_container = self.robot_container
         global app
         app = application
+        self.you = Knight()
         self.map = GameMap(adventureMap,self.you, easy, self.queue, self.robot_container)
         self.win = False;
+        app.healthBar(100)
+
 
 
     def play(self):
