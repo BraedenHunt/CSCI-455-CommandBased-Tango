@@ -318,15 +318,16 @@ class Key():
             if numChoice == self.solution:
                 say("At the press of the button, the chest opens, revealing a key!")
                 knight.key = True
-                #TODO add key
             else:
                     dmg = random.randint(15,50)
                     say("The wrong choice! A poison needle jabs you for " + str(dmg) + " damage!\nPressing the other button, you find a key.")
                     knight.key = True
                     knight.hp -= dmg
+                    #TODO update health
                     if knight.hp <= 0:
                         say(trapLoseText)
                         playAgain()
+            #TODO add key
             self.used = True           
         else:
             say("There is nothing else to find here.")
@@ -460,7 +461,7 @@ class Encounter():
         else:
             return "The remains of enemies are here."
 
-    def act(self,knight): #TODO update health
+    def act(self,knight): #TODO update health (both knight and enemies, if we are showing enemy health)
         say(self.showEnemies())
         while(self.alive):     
             command = speech_input("Enemies! 'fight' or 'run'? (You have " + str(knight.hp) + " health left.):")
