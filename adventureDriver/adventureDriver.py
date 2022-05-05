@@ -622,18 +622,93 @@ class GameMap():
                 self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
                 return
 
+    def getRelativeDir(self, facing, direction):
+        if facing == "north":
+            if direction == "north":
+                return "forward"
+            elif direction == "east":
+                return "right"
+            elif direction == "south":
+                return "back"
+            elif direction == "west":
+                return "left"
+        elif facing == "east":
+            if direction == "north":
+                return "left"
+            elif direction == "east":
+                return "forward"
+            elif direction == "south":
+                return "right"
+            elif direction == "west":
+                return "back"
+        elif facing == "south":
+            if direction == "north":
+                return "back"
+            elif direction == "east":
+                return "left"
+            elif direction == "south":
+                return "forward"
+            elif direction == "west":
+                return "right"
+        elif facing == "west":
+            if direction == "north":
+                return "right"
+            elif direction == "east":
+                return "back"
+            elif direction == "south":
+                return "left"
+            elif direction == "west":
+                return "forward"
+
+    def getCompassDir(self, facing, direction):
+        if facing == "north":
+            if direction == "forward":
+                return "north"
+            elif direction == "right":
+                return "east"
+            elif direction == "back":
+                return "south"
+            elif direction == "left":
+                return "west"
+        elif facing == "east":
+            if direction == "left":
+                return "north"
+            elif direction == "forward":
+                return "east"
+            elif direction == "right":
+                return "south"
+            elif direction == "back":
+                return "west"
+        elif facing == "south":
+            if direction == "back":
+                return "north"
+            elif direction == "left":
+                return "east"
+            elif direction == "forward":
+                return "south"
+            elif direction == "right":
+                return "west"
+        elif facing == "west":
+            if direction == "right":
+                return "north"
+            elif direction == "back":
+                return "east"
+            elif direction == "left":
+                return "south"
+            elif direction == "forward":
+                return "west"
 
     def getDir(self):
         turnInc = 1
         dirStr = "Enter Direction (you can go "
         if self.check_key_exist(self.adventureMap[self.curRoom-1],'north'):
-            dirStr+='north '
+            dirStr+= self.getRelativeDir(self.facing_dir, "north") + ' '
         if self.check_key_exist(self.adventureMap[self.curRoom-1],'south'):
-            dirStr+='south '
+            dirStr+= self.getRelativeDir(self.facing_dir, "south") + ' '
         if self.check_key_exist(self.adventureMap[self.curRoom-1],'east'):
-            dirStr+='east '
+            dirStr+= self.getRelativeDir(self.facing_dir, "east") + ' '
         if self.check_key_exist(self.adventureMap[self.curRoom-1],'west'):
-            dirStr+='west '
+            dirStr+= self.getRelativeDir(self.facing_dir, "west") + ' '
         dirStr+='):'
         direction = speech_input(dirStr)
         if direction == 'potion':
@@ -659,15 +734,17 @@ class GameMap():
                 self.knight.potion -= 1
                 # if potion == 0: TODO
                 # destroy potion image
-        elif self.check_key_exist(self.adventureMap[self.curRoom-1],direction):
+        elif self.check_key_exist(self.adventureMap[self.curRoom-1], self.getCompassDir(self.facing_dir, direction)):
             #say("Going to room: " + str(adventureMap[self.curRoom-1][direction]))
             self.curRoom = adventureMap[self.curRoom-1][direction]
             #TODO change room background
             image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
             app.loadImage(image_file)
 
-            self.turnAndMove(direction)
-            self.facing_dir = direction
+            cardinal_dir = self.getCompassDir(self.facing_dir, direction)
+
+            self.turnAndMove(cardinal_dir)
+            self.facing_dir = cardinal_dir
 
             print("")
             say(self.roomContents[self.curRoom-1].desc)
