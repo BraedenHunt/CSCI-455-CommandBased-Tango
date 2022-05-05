@@ -5,7 +5,7 @@ import speech_recognition as sr
 
 class SpeechListener:
 
-    TEXT_MODE = True
+    TEXT_MODE = False
 
     def __init__(self):
         self.phrases_heard : Queue = Queue()
