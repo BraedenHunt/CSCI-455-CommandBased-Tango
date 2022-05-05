@@ -28,7 +28,7 @@ def main():
     #robot_container.add_drink_commands()
 
     command_thread = threading.Thread(target=run_commands, args=[queue])
-    #command_thread.start()
+    command_thread.start()
     '''
     queue.put(SayPhraseCommand(robot_container.speaker, "Hello World"))
     listen_command = ListenCommand(robot_container.speech_listener)

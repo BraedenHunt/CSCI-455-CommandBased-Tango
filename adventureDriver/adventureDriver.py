@@ -482,14 +482,16 @@ class Encounter():
                 rb_container.add_slash_commands()
                 for enemy in self.enemies:
                     knight.hp -= enemy.attack()
+                    app.healthBar(knight.hp)
                     if knight.hp <= 0:
                         say(monsterLoseText)
                         playAgain()
                 dmg = knight.attack(self.enemies[0].name)
                 self.enemies[0].hp -= dmg
+                app.harm_enemy(0, dmg)
                 if self.enemies[0].hp <= 0:
                     say("You killed the " + self.enemies[0].name + "!")
-                    self.enemies.pop(0)
+                    del self.enemies[0]
                 if not self.enemies:
                     say("You defeated the enemies! You have " + str(knight.hp) + " health left.")
                     self.alive = False
@@ -499,6 +501,7 @@ class Encounter():
                         say("The " + enemy.name + " has " + str(enemy.hp) + " health left.")
             elif "run" in command:
                 say("You flee, running blindly.")
+                app.remove_all_enemies()
                 return False
             else:
                 say("That is not a possible action, try again.")
@@ -537,7 +540,7 @@ class Monster():
 
 class GameMap():
 
-    ROOM_CONTENT_MAPPING = {"Hint": 'guiPics/runes.jpeg', "Encounter": 'guiPics/dungeon_one.jpeg', "Finish": 'guiPics/throne_room.jpeg', "Start": "guiPics/dungeon_three.jpeg"}
+    ROOM_CONTENT_MAPPING = {"Hint": 'guiPics/runes.jpeg', "Encounter": 'guiPics/dungeon_one.jpeg', "Finish": 'guiPics/throne_room.jpeg', "Start": "guiPics/dungeon_three.jpeg", "Other":"guiPics/chest.jpeg", "Recharge": 'guiPics/runes.jpeg'}
 
     def __init__(self, adventureMap,knight,easy, queue:Queue, robot_container: RobotContainer):
         self.knight = knight
@@ -736,7 +739,8 @@ class GameMap():
                 # destroy potion image
         elif self.check_key_exist(self.adventureMap[self.curRoom-1], self.getCompassDir(self.facing_dir, direction)):
             #say("Going to room: " + str(adventureMap[self.curRoom-1][direction]))
-            self.curRoom = adventureMap[self.curRoom-1][direction]
+            cardinal_dir = self.getCompassDir(self.facing_dir, direction)
+            self.curRoom = adventureMap[self.curRoom-1][cardinal_dir]
             #TODO change room background
             image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
             app.loadImage(image_file)

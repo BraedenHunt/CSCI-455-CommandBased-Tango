@@ -5,7 +5,7 @@ import speech_recognition as sr
 
 class SpeechListener:
 
-    TEXT_MODE = False
+    TEXT_MODE = True
 
     def __init__(self):
         self.phrases_heard : Queue = Queue()
@@ -28,9 +28,9 @@ class SpeechListener:
     def listen(self):
         while True:
             if self.TEXT_MODE:
-                #print("Waiting for text input: ")
+                print("Waiting for text input: ")
                 word = input()
-                #print(word)
+                print(word)
                 self.phrases_heard.put(word)
             else:
                 with sr.Microphone() as source:
