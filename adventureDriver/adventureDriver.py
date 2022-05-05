@@ -7,8 +7,10 @@ from DriveCommand import DriveCommand
 from ListenCommand import ListenCommand
 from RobotContainer import RobotContainer
 from SayPhraseCommand import SayPhraseCommand
+from robot_animations import Window
 
 rb_container: RobotContainer = None
+app : Window = None
 startDesc = "You awake in an empty dungeon cell... how will you escape?\nBeware, as you only have limited time to make it out!"
 
 startRoomDesc = "An empty cell, you started here."
@@ -418,6 +420,7 @@ class Encounter():
     
     def __init__(self,difficulty):
         self.enemies = []       # what enemies there are (holds objects)
+        app.enemies = []
         self.populate(difficulty)
         self.alive = 1
 
@@ -426,33 +429,47 @@ class Encounter():
             slimes = random.randint(1,3)
             orcs = random.randint(0,1)
             for i in range(slimes):
-                self.enemies.append(Monster("slime"))
+                mon = Monster("slime")
+                self.enemies.append(mon)
+                app.loadEnemy("guiPics/slime.gif", mon.hp)
             if orcs == 1:
-                self.enemies.append(Monster("orc"))
-                
+                mon = Monster("orc")
+                self.enemies.append(mon)
+                app.loadEnemy("guiPics/orc.gif", mon.hp)
+
         elif diff == 'medium':
             slimes = random.randint(0,2)
             orcs = random.randint(1,3)
             if slimes > 0:
                 for i in range(slimes):
-                    self.enemies.append(Monster("slime"))
+                    mon = Monster("slime")
+                    self.enemies.append(mon)
+                    app.loadEnemy("guiPics/slime.gif", mon.hp)
             for i in range(orcs):
-                self.enemies.append(Monster("orc"))
+                mon = Monster("orc")
+                self.enemies.append(mon)
+                app.loadEnemy("guiPics/orc.gif", mon.hp)
         else: #diff = hard
             slimes = random.randint(0,2)
             orcs = random.randint(0,2)
             if slimes > 0:
                 for i in range(slimes):
-                    self.enemies.append(Monster("slime"))
+                    mon = Monster("slime")
+                    self.enemies.append(mon)
+                    app.loadEnemy("guiPics/slime.gif", mon.hp)
             if orcs > 0:
                 for i in range(slimes):
-                    self.enemies.append(Monster("orc"))
-            self.enemies.append(Monster("demon"))
+                    mon = Monster("orc")
+                    self.enemies.append(mon)
+                    app.loadEnemy("guiPics/orc.gif", mon.hp)
+            mon = Monster("demon")
+            self.enemies.append(mon)
+            app.loadEnemy("guiPics/demon.gif", mon.hp)
 
     def showEnemies(self): #TODO destroy all enemies and read
         if(self.alive):
             stringEncounter = ""
-            for enemy in self.enemies:
+            for i, enemy in enumerate(self.enemies):
                 if enemy.name == "orc":
                     stringEncounter += ("There is an " + enemy.name + " with " + str(enemy.hp) + " health.\n")
                 else:
@@ -815,13 +832,15 @@ class GameMap():
 
 
 class Game():
-    def __init__(self, queue: Queue, robot_container:RobotContainer, easy):
+    def __init__(self, queue: Queue, robot_container:RobotContainer, easy, application: Window):
         self.turnCount = 0
         self.you = Knight()
         self.queue = queue
         self.robot_container = robot_container
         global rb_container
         rb_container = self.robot_container
+        global app
+        app = application
         self.map = GameMap(adventureMap,self.you, easy, self.queue, self.robot_container)
         self.win = False;
 

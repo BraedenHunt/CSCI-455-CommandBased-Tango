@@ -24,7 +24,7 @@ class RobotContainer:
         self.wrist_rotate = PWMController(10, self.usb_controller)
         self.command_queue = Queue()
         self.speech_listener = SpeechListener()
-        self.speaker = TTSEngine()
+        #self.speaker = TTSEngine()
 
     def add_slash_commands(self):
         inner_delay = .05
