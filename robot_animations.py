@@ -116,7 +116,8 @@ class Window(Frame):
                 count += 1
                 if count == frames:
                     count = 0
-                anim = self.master.after(50,lambda :animation(count))
+                print("running frame for: " + fileName)
+                anim = self.master.after(100,lambda :animation(count))
             except Exception as e:
                 print("Exception in enemy animation: " + str(e))
 

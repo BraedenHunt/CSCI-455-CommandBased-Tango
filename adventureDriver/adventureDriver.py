@@ -200,7 +200,7 @@ class Node():
 class Knight():
     def __init__(self):
         self.hp=100         # hit points
-        app.healthBar(100)
+        app.healthBar(self.hp)
         self.key=False      # do you have the key?
         self.sword=False    # do you have the magic sword
         self.potion=0       # what potion do you have
@@ -745,7 +745,7 @@ class GameMap():
             print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
             image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
             app.loadImage(image_file)
-            app.healthBar(100)
+            app.healthBar(self.knight.hp)
 
             cardinal_dir = self.getCompassDir(self.facing_dir, direction)
 
@@ -768,7 +768,7 @@ class GameMap():
                     print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
                     image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
                     app.loadImage(image_file)
-                    app.healthBar(100)
+                    app.healthBar(self.knight.hp)
 
                     self.queue.put(DriveCommand(self.robot_container.drivetrain, 3*self.turn_time, self.speed, -self.speed))
                     say(self.roomContents[self.curRoom-1].desc)
@@ -832,7 +832,7 @@ class GameMap():
         print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
         image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
         app.loadImage(image_file)
-        app.healthBar(100)
+        app.healthBar(self.knight.hp)
         rooms.remove(self.curRoom)
         if easy: say("Start placed at "+str(self.curRoom))
         #say(rooms)
@@ -940,7 +940,7 @@ class Game():
         self.you = Knight()
         self.map = GameMap(adventureMap,self.you, easy, self.queue, self.robot_container)
         self.win = False;
-        app.healthBar(100)
+        app.healthBar(self.you.hp)
 
 
 
