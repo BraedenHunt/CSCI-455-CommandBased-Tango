@@ -26,10 +26,11 @@ class Window(Frame):
         self.enemies[index].set_health(hp)
 
     def healthBar(self, health):
-        if self.healthBar_canvas is None:
-            self.healthBar_canvas = Canvas(self, width = 300, height = 70, highlightthickness=0)
+        if self.healthBar_canvas is not None:
+            self.healthBar_canvas.destroy()
+        self.healthBar_canvas = Canvas(self, width = 300, height = 70, highlightthickness=0)
         self.healthBar_canvas.configure(bg='black')
-        newHealth = health + 50
+        newHealth = (2*health) + 50
         self.healthBar_canvas.create_text(70, 15, text="HEALTH", fill="white", font=('Helvetica 15 bold'))
         # Health bounds 0 & 200
         self.healthBar_canvas.create_rectangle(50, 55, 250, 30, fill = 'white')

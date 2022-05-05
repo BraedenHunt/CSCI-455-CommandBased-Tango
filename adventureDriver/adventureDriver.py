@@ -745,6 +745,7 @@ class GameMap():
             print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
             image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
             app.loadImage(image_file)
+            app.healthBar(100)
 
             cardinal_dir = self.getCompassDir(self.facing_dir, direction)
 
@@ -767,6 +768,8 @@ class GameMap():
                     print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
                     image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
                     app.loadImage(image_file)
+                    app.healthBar(100)
+
                     self.queue.put(DriveCommand(self.robot_container.drivetrain, 3*self.turn_time, self.speed, -self.speed))
                     say(self.roomContents[self.curRoom-1].desc)
             elif str(self.roomContents[self.curRoom-1].content) == "Finish":
@@ -829,6 +832,7 @@ class GameMap():
         print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
         image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
         app.loadImage(image_file)
+        app.healthBar(100)
         rooms.remove(self.curRoom)
         if easy: say("Start placed at "+str(self.curRoom))
         #say(rooms)
