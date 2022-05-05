@@ -557,73 +557,15 @@ class GameMap():
         self.speed = .7
 
     def turnAndMove(self, dir):
-        if self.facing_dir == "north":
-            if dir == "north":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "east":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "south":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, 2*self.turn_time, self.speed, -self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "west":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-        elif self.facing_dir == "east":
-            if dir == "north":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "east":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "south":
-                self.queue.put(
-                    DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "west":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, 2*self.turn_time, self.speed, -self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-        elif self.facing_dir == "south":
-            if dir == "north":
-                self.queue.put(
-                    DriveCommand(self.robot_container.drivetrain, 2 * self.turn_time, -self.speed, self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "east":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "south":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "west":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-        elif self.facing_dir == "west":
-            if dir == "north":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "east":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, 2*self.turn_time, -self.speed, self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "south":
-                self.queue.put(
-                    DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
-            elif dir == "west":
-                self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
-                return
+        if dir == "back":
+            self.queue.put(DriveCommand(self.robot_container.drivetrain, 2*self.turn_time, -self.speed, self.speed))
+        elif dir == "left":
+            self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, -self.speed, self.speed))
+        elif dir == "right":
+            self.queue.put(DriveCommand(self.robot_container.drivetrain, self.turn_time, self.speed, -self.speed))
+
+        self.queue.put(DriveCommand(self.robot_container.drivetrain, self.drive_time, self.speed, self.speed))
+
 
     def getRelativeDir(self, facing, direction):
         if facing == "north":
@@ -749,7 +691,7 @@ class GameMap():
 
             cardinal_dir = self.getCompassDir(self.facing_dir, direction)
 
-            self.turnAndMove(cardinal_dir)
+            self.turnAndMove(direction)
             self.facing_dir = cardinal_dir
 
             print("")
