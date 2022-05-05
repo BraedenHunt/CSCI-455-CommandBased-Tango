@@ -94,8 +94,9 @@ class Window(Frame):
         img = Image.open(fileName)
         resized_img = img.resize((800, 480), Image.ANTIALIAS)
         render = ImageTk.PhotoImage(resized_img)
-        if self.background_image is None:
-            self.background_image = Label(self, image=render, borderwidth = 0)
+        if self.background_image is not None:
+            self.background_image.destroy()
+        self.background_image = Label(self, image=render, borderwidth = 0)
         self.background_image.image = render
         self.background_image.place(x=0, y=0)
 

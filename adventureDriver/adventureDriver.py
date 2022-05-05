@@ -742,6 +742,7 @@ class GameMap():
             cardinal_dir = self.getCompassDir(self.facing_dir, direction)
             self.curRoom = adventureMap[self.curRoom-1][cardinal_dir]
             #TODO change room background
+            print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
             image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
             app.loadImage(image_file)
 
@@ -763,6 +764,7 @@ class GameMap():
                 else: # runs away
                     self.curRoom = random.randint(1,25)
                     #TODO update room
+                    print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
                     image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
                     app.loadImage(image_file)
                     self.queue.put(DriveCommand(self.robot_container.drivetrain, 3*self.turn_time, self.speed, -self.speed))
@@ -824,6 +826,7 @@ class GameMap():
         self.curRoom = possibleStartPos[random.randint(0,len(possibleStartPos)-1)]
         self.roomContents[self.curRoom-1] = Node(self.curRoom, Start(), startRoomDesc)
         #TODO start room
+        print("Going to room type: " + str(self.roomContents[self.curRoom - 1].content))
         image_file = self.ROOM_CONTENT_MAPPING[str(self.roomContents[self.curRoom - 1].content)]
         app.loadImage(image_file)
         rooms.remove(self.curRoom)
